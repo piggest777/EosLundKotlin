@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#16000000">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/table_item_guidline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <ImageView
+                android:id="@+id/list_home_team_logo_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/eos_logo" />
+
+            <ImageView
+                android:id="@+id/list_away_team_logo_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/default_image_logo" />
+
+            <TextView
+                android:id="@+id/game_list_item_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/game_list_item_date_tv"
+                app:layout_constraintStart_toStartOf="@+id/game_list_item_date_tv"
+                tools:text="Eoshallen, Lund" />
+
+            <TextView
+                android:id="@+id/game_list_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_extrabold"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/table_item_guidline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="14:00"
+                tools:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/game_list_item_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/table_item_guidline"
+                tools:text="Lör, 11/17"
+                tools:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/game_list_home_team_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home"
+                app:layout_constraintEnd_toEndOf="@+id/list_home_team_logo_iv"
+                app:layout_constraintStart_toStartOf="@+id/list_home_team_logo_iv"
+                app:layout_constraintTop_toBottomOf="@+id/list_home_team_logo_iv" />
+
+            <TextView
+                android:id="@+id/game_list_item_away_team_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/away"
+                app:layout_constraintEnd_toEndOf="@+id/list_away_team_logo_iv"
+                app:layout_constraintStart_toStartOf="@+id/list_away_team_logo_iv"
+                app:layout_constraintTop_toBottomOf="@+id/list_away_team_logo_iv" />
+
+            <TextView
+                android:id="@+id/game_list_item_scores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_extrabold"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toTopOf="@+id/table_item_guidline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/table_item_guidline"
+                tools:text="116:112"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/game_list_item_home_winner_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/list_home_team_logo_iv"
+                app:layout_constraintEnd_toEndOf="@+id/list_home_team_logo_iv"
+                app:layout_constraintStart_toStartOf="@+id/list_home_team_logo_iv"
+                app:srcCompat="@android:drawable/arrow_down_float"
+                tools:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/game_list_item_guest_winner_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/list_away_team_logo_iv"
+                app:layout_constraintEnd_toEndOf="@+id/list_away_team_logo_iv"
+                app:layout_constraintStart_toStartOf="@+id/list_away_team_logo_iv"
+                app:srcCompat="@android:drawable/arrow_down_float"
+                tools:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/game_list_item_scores_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="17 NOV" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Eos Lund</string>
+    <string name="news">News</string>
+    <string name="team">Team</string>
+    <string name="games">Games</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sbld">SBLD</string>
+    <string name="se_herr">SE HERR</string>
+    <string name="be_dam">BE DAM</string>
+    <string name="all_teams">ALL</string>
+    <string name="game_place">%1$s, %2$s</string>
+    <string name="home">Home</string>
+    <string name="away">Away</string>
+</resources>

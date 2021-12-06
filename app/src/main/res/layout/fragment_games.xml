@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Controller.GamesFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#16000000">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RadioButton
+                    android:id="@+id/sbldRadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_segmented_left"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="@string/sbld"
+                    android:textColor="@drawable/txt_segmented" />
+
+                <RadioButton
+                    android:id="@+id/seHerrRadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_segmented_center"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="@string/se_herr"
+                    android:textColor="@drawable/txt_segmented" />
+
+                <RadioButton
+                    android:id="@+id/beDamRadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_segmented_center"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+
+                    android:text="@string/be_dam"
+                    android:textColor="@drawable/txt_segmented" />
+
+                <RadioButton
+                    android:id="@+id/allTeamsRadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_segmented_right"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/all_teams"
+                    android:textColor="@drawable/txt_segmented" />
+            </RadioGroup>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/imageView"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:scaleType="centerCrop"-->
+        <!--            app:layout_constraintBottom_toTopOf="@+id/guideline3"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
+        <!--            android:src="@drawable/sbld_default"/>-->
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="#E8FFFFFF"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/games_anons_place_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:text="@string/game_place"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Lund, Eoshallen" />
+
+
+                <ImageView
+                    android:id="@+id/games_homeLogo_anonns_iv"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/eos_logo"
+                    app:layout_constraintBottom_toTopOf="@+id/game_anons_counter"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@+id/game_anons_date"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/games_anons_place_tv"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/game_anons_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@+id/game_anons_time"
+                    app:layout_constraintEnd_toEndOf="@+id/games_anons_place_tv"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/games_anons_place_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/games_anons_place_tv"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="17 NOV" />
+
+
+                <TextView
+                    android:id="@+id/game_anons_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="21dp"
+                    android:background="@drawable/rounded_rect"
+                    android:firstBaselineToTopHeight="0dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="-8dp"
+                    android:paddingTop="0pt"
+                    android:paddingBottom="0pt"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toTopOf="@+id/game_anons_counter"
+                    app:layout_constraintEnd_toEndOf="@+id/game_anons_date"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/game_anons_date"
+                    app:layout_constraintTop_toBottomOf="@+id/game_anons_date"
+                    tools:text="19:00" />
+
+                <ImageView
+                    android:id="@+id/game_anons_guest_logo_iv"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/default_image_logo"
+                    app:layout_constraintBottom_toBottomOf="@+id/games_homeLogo_anonns_iv"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/game_anons_date"
+                    app:layout_constraintTop_toTopOf="@+id/games_homeLogo_anonns_iv" />
+
+                <TextView
+                    android:id="@+id/game_anons_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/game_anons_date"
+                    app:layout_constraintStart_toStartOf="@+id/game_anons_date"
+                    tools:text="00:00:00" />
+
+                <TextView
+                    android:id="@+id/game_anons_home_team_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="@string/home"
+                    app:layout_constraintEnd_toEndOf="@+id/games_homeLogo_anonns_iv"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/games_homeLogo_anonns_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/games_homeLogo_anonns_iv" />
+
+                <TextView
+                    android:id="@+id/game_anons_away_team_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="@string/away"
+                    app:layout_constraintEnd_toEndOf="@+id/game_anons_guest_logo_iv"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/game_anons_guest_logo_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/games_homeLogo_anonns_iv" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.33" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/teal_200"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

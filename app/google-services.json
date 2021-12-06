@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "879899172214",
+    "firebase_url": "https://eoslund-4ceb4.firebaseio.com",
+    "project_id": "eoslund-4ceb4",
+    "storage_bucket": "eoslund-4ceb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879899172214:android:20d138baa80969519bae57",
+        "android_client_info": {
+          "package_name": "se.eoslund.app.eos_basket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879899172214-gs96l101qns66odv5bp685ms6ft4604i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRlHBVFiGTJAYCcaG3gfoqkrYyzc-vY7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879899172214-gs96l101qns66odv5bp685ms6ft4604i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "879899172214-h63uurkihebub0svcjohhl0uhq4rf75f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.eosLund.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879899172214:android:3aa7bafb06d174049bae57",
+        "android_client_info": {
+          "package_name": "se.eoslund.piggest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879899172214-gs96l101qns66odv5bp685ms6ft4604i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRlHBVFiGTJAYCcaG3gfoqkrYyzc-vY7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879899172214-gs96l101qns66odv5bp685ms6ft4604i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "879899172214-h63uurkihebub0svcjohhl0uhq4rf75f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.eosLund.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
