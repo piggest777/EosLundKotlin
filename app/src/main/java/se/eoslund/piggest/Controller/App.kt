@@ -24,10 +24,17 @@ class App: Application() {
         instance = this
         prefs = Prefs(instance)
 
-        Realm.init(this)
+        Realm.init(instance)
+        val realmName: String = "EosRealmBase"
+        var realmConfig = RealmConfiguration.Builder().name(realmName).build()
+        val backgroundThreadRealm : Realm = Realm.getInstance(realmConfig)
+        Realm.setDefaultConfiguration(realmConfig)
+
 
         val db = Firebase.firestore
         val docRef = db.collection("teams")
+         var date = prefs!!.teamUpdateDate
+        Log.d("PREFS", "current date is $date")
 
         updateTeamChecker(docRef){ success ->
             if(success) {
@@ -35,15 +42,18 @@ class App: Application() {
             }
         }
 
-        val realmName: String = "EosRealmBase"
-        realmConfig = RealmConfiguration.Builder().name(realmName).build()
-        val backgroundThreadRealm : Realm = Realm.getInstance(realmConfig)
+
     }
 
     companion object {
         lateinit var instance: App
-        lateinit var realmConfig: RealmConfiguration
+//        lateinit var realmConfig: RealmConfiguration
         var prefs: Prefs? = null
+
+//        val realmName: String = "EosRealmBase"
+//        var realmConfig = RealmConfiguration.Builder().name(realmName).build()
+//        val backgroundThreadRealm : Realm = Realm.getInstance(realmConfig)
+
 
 
 
