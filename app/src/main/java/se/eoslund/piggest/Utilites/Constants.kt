@@ -1,5 +1,8 @@
 package se.eoslund.piggest.Utilites
 
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
 object Constants {
 
     //team const
@@ -9,4 +12,5 @@ object Constants {
     const val LOGO_PATH_NAME = "logoPathName"
     const val DEFAULT_TEAM_LOGO = "defaultTeamLogo.png"
     const val TEAM_INFO_UPDATE_DATE = "teamInfoUpdateDate"
+
 }

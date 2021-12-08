@@ -36,6 +36,22 @@ open class TeamRO(
             })
         }
 
+        fun addAllTeamsWithCallback(teamList: List<TeamFSO>, completion: (Boolean) -> Unit) {
+            realm.executeTransactionAsync({ transactionRealm ->
+                teamList.forEach {
+                    val newTeamRO =
+                        TeamRO(it.id, it.name, it.city, it.homeArena, it.logoPath)
+                    transactionRealm.insertOrUpdate(newTeamRO)
+                }
+            }, {
+                completion(true)
+                Log.v("Realm", "Successfully completed the transaction")
+            }, { error ->
+                completion(false)
+                Log.e("Realm", "Failed the transaction: $error")
+            })
+        }
+
         fun getAllTeamsFromRealm(): RealmQuery<TeamRO>? {
             return realm.where(TeamRO::class.java)
         }
