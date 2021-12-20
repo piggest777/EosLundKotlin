@@ -8,10 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import se.eoslund.piggest.Controller.App
 import se.eoslund.piggest.Model.Game
 import se.eoslund.piggest.R
 
-class GameAdapter(val context: Context, val games:  List<Game>, val itemClick: (Game)-> Unit ): Adapter<GameAdapter.GameHolder>() {
+class GameAdapter(val games:  List<Game>, val itemClick: (Game)-> Unit ): Adapter<GameAdapter.GameHolder>() {
     inner class GameHolder(val itemView: View, val intemClick: (Game) -> Unit): ViewHolder(itemView) {
 
         val homeTeamLogo = itemView.findViewById<ImageView>(R.id.list_home_team_logo_iv)
@@ -35,7 +36,7 @@ class GameAdapter(val context: Context, val games:  List<Game>, val itemClick: (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameHolder {
-        val view = LayoutInflater.from(context)
+        val view = LayoutInflater.from(App.instance)
             .inflate(R.layout.game_schedule_list_item, parent, false)
         return GameHolder(view, itemClick)
     }

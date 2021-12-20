@@ -18,7 +18,7 @@ val prefs: Prefs by lazy {
     App.prefs!!
 }
 
-class App: Application() {
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -29,15 +29,15 @@ class App: Application() {
         val db = Firebase.firestore
         val docRef = db.collection("teams")
 
-        updateTeamChecker(docRef){ success ->
-            if(success) {
+        updateTeamChecker(docRef) { success ->
+            if (success) {
                 Log.d("UPDATE", "successfully updated team base")
             }
         }
 
         val realmName: String = "EosRealmBase"
         realmConfig = RealmConfiguration.Builder().name(realmName).build()
-        val backgroundThreadRealm : Realm = Realm.getInstance(realmConfig)
+        val backgroundThreadRealm: Realm = Realm.getInstance(realmConfig)
     }
 
     companion object {
@@ -46,8 +46,10 @@ class App: Application() {
         var prefs: Prefs? = null
 
 
-
-        fun loadTeamInfoFromFirebase(ref: CollectionReference, returnedTeamArray: (List<TeamFSO>) -> Unit){
+        private fun loadTeamInfoFromFirebase(
+            ref: CollectionReference,
+            returnedTeamArray: (List<TeamFSO>) -> Unit
+        ) {
             ref.get().addOnSuccessListener { snapshot ->
                 val teamArray = TeamFSO.parseTeamData(snapshot)
                 returnedTeamArray(teamArray)
@@ -57,11 +59,11 @@ class App: Application() {
                 }
         }
 
-        fun updateTeamChecker(teamRef: CollectionReference, completionHandler: (Boolean)-> Unit){
+        fun updateTeamChecker(teamRef: CollectionReference, completionHandler: (Boolean) -> Unit) {
             val nullLong: Long = -1
             val teams = TeamRO.getAllTeamsFromRealm()
             val teamsCount = teams?.count()
-            if (prefs!!.teamUpdateDate != nullLong && teams != null && teamsCount!! > 0){
+            if (prefs!!.teamUpdateDate != nullLong && teams != null && teamsCount!! > 0) {
                 teamRef.document(TEAM_INFO_UPDATE_DATE).get()
                     .addOnSuccessListener { document ->
                         if (document != null) {
@@ -70,12 +72,12 @@ class App: Application() {
                             timestampDate?.let {
                                 val fireBaseDateValue = it.toDate()
                                 val appUpdateDate = Date(prefs!!.teamUpdateDate)
-                                if (fireBaseDateValue > appUpdateDate){
-                                            updateTeamRealmBase { success ->
-                                                if(success) {
-                                                    completionHandler(true)
-                                                }
-                                             }
+                                if (fireBaseDateValue > appUpdateDate) {
+                                    updateTeamRealmBase { success ->
+                                        if (success) {
+                                            completionHandler(true)
+                                        }
+                                    }
                                 }
                             }
 
@@ -87,16 +89,16 @@ class App: Application() {
                         Log.d("FIREBASE", "get failed with ", exception)
                     }
             } else {
-                Log.d("UPDATE", "Updating team base" )
+                Log.d("UPDATE", "Updating team base")
                 updateTeamRealmBase { success ->
-                    if(success) {
+                    if (success) {
                         completionHandler(true)
                     }
                 }
             }
         }
 
-        fun updateTeamRealmBase(updaterStatus: (Boolean)-> Unit){
+        private fun updateTeamRealmBase(updaterStatus: (Boolean) -> Unit) {
             val db = Firebase.firestore
             val teamRef = db.collection("teams")
             loadTeamInfoFromFirebase(teamRef) { teams ->

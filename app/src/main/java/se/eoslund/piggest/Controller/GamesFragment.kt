@@ -29,7 +29,8 @@ class GamesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var radioGroup: RadioGroup
-    lateinit var emojiTextView: TextView
+
+    var choosenLeague: String = "SBLD"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +88,8 @@ class GamesFragment : Fragment() {
     override fun getView(): View? {
         return super.getView()
     }
+
+
 
     companion object {
         /**
