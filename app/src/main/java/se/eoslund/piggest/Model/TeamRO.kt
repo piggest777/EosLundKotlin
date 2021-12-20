@@ -19,9 +19,10 @@ open class TeamRO(
 ) : RealmObject() {
 
     companion object{
-        val realm: Realm = Realm.getInstance(App.realmConfig)
+
 
         suspend fun addTeamWithCallback(fireTeam: TeamFSO, completion:(Boolean)->Unit) {
+            val realm: Realm = Realm.getDefaultInstance()
             val newTeamRO =
                 TeamRO(fireTeam.id, fireTeam.name, fireTeam.city, fireTeam.homeArena, fireTeam.logoPath)
 
@@ -37,6 +38,7 @@ open class TeamRO(
         }
 
         fun addAllTeamsWithCallback(teamList: List<TeamFSO>, completion: (Boolean) -> Unit) {
+            val realm: Realm = Realm.getDefaultInstance()
             realm.executeTransactionAsync({ transactionRealm ->
                 teamList.forEach {
                     val newTeamRO =
@@ -53,6 +55,7 @@ open class TeamRO(
         }
 
         fun getAllTeamsFromRealm(): RealmQuery<TeamRO>? {
+            val realm: Realm = Realm.getDefaultInstance()
             return realm.where(TeamRO::class.java)
         }
     }
