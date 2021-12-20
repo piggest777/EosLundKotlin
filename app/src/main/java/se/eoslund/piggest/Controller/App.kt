@@ -83,6 +83,7 @@ class App: Application() {
                                 if (fireBaseDateValue > appUpdateDate){
                                             updateTeamRealmBase { success ->
                                                 if(success) {
+                                                    updatePrefsToCurrentDate()
                                                     completionHandler(true)
                                                 }
                                              }
@@ -100,6 +101,7 @@ class App: Application() {
                 Log.d("UPDATE", "Updating team base" )
                 updateTeamRealmBase { success ->
                     if(success) {
+                        updatePrefsToCurrentDate()
                         completionHandler(true)
                     }
                 }
@@ -116,6 +118,11 @@ class App: Application() {
                     }
                 }
             }
+        }
+
+        fun updatePrefsToCurrentDate(){
+            val currentDate = Date()
+            prefs!!.teamUpdateDate = currentDate.time
         }
 
 
