@@ -1,4 +1,4 @@
-package se.eoslund.piggest.Controller
+package se.eoslund.piggest.controller
 
 import android.app.Application
 import android.util.Log
@@ -8,10 +8,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import se.eoslund.piggest.Model.TeamFSO
-import se.eoslund.piggest.Model.TeamRO
-import se.eoslund.piggest.Services.Prefs
-import se.eoslund.piggest.Utilites.Constants.TEAM_INFO_UPDATE_DATE
+import se.eoslund.piggest.model.TeamFSO
+import se.eoslund.piggest.model.TeamRO
+import se.eoslund.piggest.services.Prefs
+import se.eoslund.piggest.utilites.Constants.TEAM_INFO_UPDATE_DATE
 import java.util.*
 
 val prefs: Prefs by lazy {
@@ -114,7 +114,7 @@ class App: Application() {
             }
         }
 
-        fun updatePrefsToCurrentDate(){
+        private fun updatePrefsToCurrentDate(){
             val currentDate = Date()
             prefs!!.teamUpdateDate = currentDate.time
         }

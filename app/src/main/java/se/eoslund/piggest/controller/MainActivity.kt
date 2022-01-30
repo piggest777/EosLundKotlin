@@ -1,10 +1,12 @@
-package se.eoslund.piggest.Controller
+package se.eoslund.piggest.controller
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.ListenerRegistration
 import se.eoslund.piggest.R
+import se.eoslund.piggest.model.Game
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,8 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         replaceFragment(gamesFragment)
 
-
-
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
        bottomNav.setOnItemSelectedListener {
@@ -32,6 +32,10 @@ class MainActivity : AppCompatActivity() {
        }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     private fun replaceFragment(fragment: Fragment) {
         if(fragment != null)  {
             var transaction = supportFragmentManager.beginTransaction()
@@ -39,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             transaction.commit()
         }
     }
-
 }
 
 

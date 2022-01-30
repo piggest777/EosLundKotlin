@@ -8,17 +8,19 @@
         <entry key="app/src/main/res/drawable/btn_segmented_right.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/rounded_rect.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/txt_segmented.xml" value="0.5427083333333333" />
+        <entry key="app/src/main/res/layout-v26/game_schedule_list_item.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/btn_segmented_left.xml" value="0.5265625" />
-        <entry key="app/src/main/res/layout/fragment_games.xml" value="0.5192708333333333" />
+        <entry key="app/src/main/res/layout/fragment_games.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_news.xml" value="0.5192708333333333" />
-        <entry key="app/src/main/res/layout/fragment_team.xml" value="0.5192708333333333" />
-        <entry key="app/src/main/res/layout/game_schedule_list_item.xml" value="0.5265625" />
+        <entry key="app/src/main/res/layout/fragment_team.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/game_schedule_list_item.xml" value="0.35431654676258995" />
+        <entry key="app/src/main/res/layout/team_plaeyer_item.xml" value="0.19933554817275748" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.3375" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

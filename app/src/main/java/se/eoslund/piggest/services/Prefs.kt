@@ -1,10 +1,7 @@
-package se.eoslund.piggest.Services
+package se.eoslund.piggest.services
 
 import android.content.Context
 import android.content.SharedPreferences
-import io.grpc.InternalConfigSelector.KEY
-import java.security.Key
-import java.util.*
 
 class Prefs(context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences("prefs",Context.MODE_PRIVATE)

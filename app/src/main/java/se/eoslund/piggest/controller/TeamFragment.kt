@@ -1,4 +1,4 @@
-package se.eoslund.piggest.Controller
+package se.eoslund.piggest.controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

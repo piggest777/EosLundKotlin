@@ -1,13 +1,11 @@
-package se.eoslund.piggest.Model
+package se.eoslund.piggest.model
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.QuerySnapshot
-import se.eoslund.piggest.Utilites.Constants.DEFAULT_TEAM_LOGO
-import se.eoslund.piggest.Utilites.Constants.HOME_ARENA
-import se.eoslund.piggest.Utilites.Constants.LOGO_PATH_NAME
-import se.eoslund.piggest.Utilites.Constants.TEAM_CITY
-import se.eoslund.piggest.Utilites.Constants.TEAM_NAME
+import se.eoslund.piggest.utilites.Constants.DEFAULT_TEAM_LOGO
+import se.eoslund.piggest.utilites.Constants.HOME_ARENA
+import se.eoslund.piggest.utilites.Constants.LOGO_PATH_NAME
+import se.eoslund.piggest.utilites.Constants.TEAM_CITY
+import se.eoslund.piggest.utilites.Constants.TEAM_NAME
 
 
 
