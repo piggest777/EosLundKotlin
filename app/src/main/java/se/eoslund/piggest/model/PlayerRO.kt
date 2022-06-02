@@ -7,15 +7,13 @@ import io.realm.annotations.Index
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 import se.eoslund.piggest.services.DataService
-import se.eoslund.piggest.utilites.Constants.PLAYER_NUMBER
-import se.eoslund.piggest.utilites.Constants.TEAM_LEAGUE
 import java.util.*
 
 open class PlayerRO(
 
-
     @PrimaryKey
     var id: String = "",
+
     var image: ByteArray? = null,
     var bigImage: String? = "",
     var updateDate: Date = Date(),
@@ -35,7 +33,7 @@ open class PlayerRO(
     companion object {
 
         fun updatePlayerInBase(
-            player: PlayerFSO,
+            player: Player,
             playerImage: Bitmap,
             completionHandler: (Boolean) -> Unit
         ) {
@@ -53,6 +51,7 @@ open class PlayerRO(
             pObject.originalClub = player.originalClub
             pObject.inEosFrom = player.inEosFrom
             pObject.bigImage = player.bigImageURL
+            pObject.number = player.number.toInt()
 
             val realm = Realm.getDefaultInstance()
 
@@ -67,19 +66,73 @@ open class PlayerRO(
             })
         }
 
-        fun getAllPlayerFromBase(): RealmQuery<PlayerRO>? {
-            val realm = Realm.getDefaultInstance()
-            return realm.where(PlayerRO::class.java)
+        fun addAllPlayersWithCallback(playerList: List<PlayerRO>, completion: (Boolean) -> Unit) {
+            val realm: Realm = Realm.getDefaultInstance()
+            realm.executeTransactionAsync({ transactionRealm ->
+                playerList.forEach {
+                    transactionRealm.insertOrUpdate(it)
+                }
+            }, {
+                completion(true)
+                Log.v("REALM", "Successfully completed player transaction")
+            }, { error ->
+                completion(false)
+                Log.e("REALM", "Failed player transaction: $error")
+            })
         }
 
-        fun getPlayersFromLeague(league: String) : RealmResults<PlayerRO>{
+        fun getAllPlayerFromBase(): MutableList<PlayerRO> {
+            val realm = Realm.getDefaultInstance()
+            val results = realm.where(PlayerRO::class.java).findAll()
+            return realm.copyFromRealm(results)
+        }
+
+        fun getPlayersFromLeague(league: String) : MutableList<PlayerRO> {
             val realm = Realm.getDefaultInstance()
 
-            return realm.where(PlayerRO::class.java)
-                .equalTo(TEAM_LEAGUE, league)
-                .sort(PLAYER_NUMBER, Sort.ASCENDING)
+            val results =  realm.where(PlayerRO::class.java)
+                .equalTo("league", league)
+                .sort("number", Sort.ASCENDING)
                 .findAll()
-            //TODO: map to FSOObj(look in pong)
+            return realm.copyFromRealm(results)
         }
+
+        fun deletePlayerById(id: String) {
+            val realm = Realm.getDefaultInstance()
+
+            realm.executeTransaction { r: Realm ->
+                r.where(PlayerRO::class.java)
+                    .equalTo("id", id)
+                    .findFirst()?.deleteFromRealm()
+            }
+        }
+
+        fun findPlayerById(id: String): PlayerRO {
+            val realm = Realm.getDefaultInstance()
+
+            return realm.where(PlayerRO::class.java)
+                .equalTo("id", id)
+                .findFirst() ?: PlayerRO()
+        }
+
+
+//        private fun mapPlayer(playerRO: PlayerRO) : PlayerFSO{
+//            val pImage = DataService.byteArrayToImage(playerRO.image)
+//            return PlayerFSO (
+//                playerRO.name,
+//                playerRO.number,
+//                playerRO.dayOfBirth,
+//                playerRO.height,
+//                playerRO.position,
+//                playerRO.id,
+//                playerRO.imageUrl,
+//                playerRO.league,
+//                playerRO.updateDate,
+//                playerRO.nationality,
+//                playerRO.originalClub,
+//                playerRO.inEosFrom,
+//                playerRO.bigImage
+//            )
+//        }
     }
 }

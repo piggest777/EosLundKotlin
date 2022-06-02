@@ -46,6 +46,10 @@ object Constants {
 
     //refs
     const val GAMES_REF = "games"
+    const val BASE_UPDATE_DATE = "baseUpdateDate"
+    const val PLAYER_BASE_UPDATE_DATE = "playersBaseUpdateDate"
+    const val DATE = "date"
+    const val PLAYERS_REF = "players"
 
 
     val EOS_TEAM: TeamFSO = TeamFSO("Eos Basket","Eos Basket", "Lund", "Eoshallen","eosLogo.png")

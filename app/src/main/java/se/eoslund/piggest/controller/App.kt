@@ -2,7 +2,11 @@ package se.eoslund.piggest.controller
 
 import android.app.Application
 import android.util.Log
+import com.google.firebase.FirebaseApp
 import com.google.firebase.Timestamp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -35,6 +39,12 @@ class App: Application() {
         val docRef = db.collection("teams")
          var date = prefs!!.teamUpdateDate
         Log.d("PREFS", "current date is $date")
+
+        FirebaseApp.initializeApp(/*context=*/this)
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            DebugAppCheckProviderFactory.getInstance()
+        )
 
         updateTeamChecker(docRef){ success ->
             if(success) {

@@ -1,5 +1,6 @@
 package se.eoslund.piggest.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -63,7 +64,7 @@ class GamesFragment : Fragment() {
     lateinit var ngDateTextView: TextView
     lateinit var ngTimeTextView: TextView
     lateinit var ngTimeCounterTextView: TextView
-    lateinit var countDownTimer: CountDownTimer
+    var countDownTimer: CountDownTimer? = null
 
 
 
@@ -80,8 +81,6 @@ class GamesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-        Log.d("debugPrint", "onCreate");
     }
 
     override fun onCreateView(
@@ -116,13 +115,14 @@ class GamesFragment : Fragment() {
                 getString(R.string.all_teams) -> ALL_LEAGUE
                 else -> SBLD_LEAGUE
             }
-            countDownTimer.cancel()
+            countDownTimer?.cancel()
             gameScheduleListener.remove()
             setListener()
         }
 
         adapter = GameAdapter(gameArray) {
-            Log.d("TEST", "Clicked")
+            Intent(App.instance, MatchActivity::class.java)
+                .apply { startActivity(this) }
         }
         gamesList.adapter = adapter
         gamesList.layoutManager = LinearLayoutManager(instance)
@@ -139,7 +139,7 @@ class GamesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         gameScheduleListener.remove()
-        countDownTimer.cancel()
+        countDownTimer?.cancel()
     }
 
     override fun getView(): View? {

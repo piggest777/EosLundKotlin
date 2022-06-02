@@ -79,6 +79,32 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <com.skydoves.progressview.ProgressView
+            android:id="@+id/update_team_progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:progressView_autoAnimate="true"
+            app:progressView_colorBackground="@color/white"
+            app:progressView_colorProgress="@color/colorSecondary"
+            app:progressView_labelColorInner="@color/white"
+            app:progressView_labelColorOuter="@color/black"
+            app:progressView_labelSize="13sp"
+            app:progressView_labelSpace="10dp"
+            app:progressView_labelText="@string/progress_view_update_percent"
+            app:progressView_labelTypeface="bold"
+            app:progressView_max="100"
+            app:progressView_min="0"
+            app:progressView_padding="1dp"
+            app:progressView_progress="0"
+            app:progressView_progressFromPrevious="true"
+            app:progressView_radius="12dp"
+            app:progressView_colorGradientStart="#806DBC63"
+        app:progressView_colorGradientEnd="@color/colorSecondary"
+            tools:visibility="visible" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/team_recycle_view"
             android:layout_width="match_parent"
@@ -86,7 +112,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/update_team_progress_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

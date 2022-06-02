@@ -6,16 +6,20 @@
         <entry key="app/src/main/res/drawable/btn_segmented_center.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/btn_segmented_left.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/btn_segmented_right.xml" value="0.5427083333333333" />
+        <entry key="app/src/main/res/drawable/image_rounded.xml" value="0.5205" />
         <entry key="app/src/main/res/drawable/rounded_rect.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/txt_segmented.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/layout-v26/game_schedule_list_item.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30833333333333335" />
+        <entry key="app/src/main/res/layout/activity_match.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_player.xml" value="0.55" />
         <entry key="app/src/main/res/layout/btn_segmented_left.xml" value="0.5265625" />
         <entry key="app/src/main/res/layout/fragment_games.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_news.xml" value="0.5192708333333333" />
         <entry key="app/src/main/res/layout/fragment_team.xml" value="0.375" />
         <entry key="app/src/main/res/layout/game_schedule_list_item.xml" value="0.35431654676258995" />
         <entry key="app/src/main/res/layout/team_plaeyer_item.xml" value="0.19933554817275748" />
+        <entry key="app/src/main/res/layout/team_player_item.xml" value="0.4685185185185185" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.3375" />
       </map>
     </option>

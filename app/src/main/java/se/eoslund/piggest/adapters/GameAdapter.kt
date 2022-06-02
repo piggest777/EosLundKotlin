@@ -21,7 +21,7 @@ import java.util.*
 
 class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)-> Unit ): RecyclerView.Adapter<GameAdapter.GameHolder>() {
 
-    inner class GameHolder(val itemView: View, val itemClick: (Game) -> Unit): ViewHolder(itemView) {
+    inner class GameHolder( itemView: View, val itemClick: (Game) -> Unit): ViewHolder(itemView) {
 
         private val homeTeamLogo: ImageView = itemView.findViewById(R.id.list_home_team_logo_iv)
         private val awayTeamLogo: ImageView = itemView.findViewById(R.id.list_away_team_logo_iv)

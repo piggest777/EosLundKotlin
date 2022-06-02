@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCE3E3E3"
+    tools:context=".controller.PlayerActivity">
+
+    <ImageView
+        android:id="@+id/player_eos_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
+        app:srcCompat="@drawable/gray_eos_logo" />
+
+    <ImageView
+        android:id="@+id/player_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/player_eos_background"
+        app:layout_constraintDimensionRatio="1:1.33"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/player_eos_background"
+        app:srcCompat="@drawable/defaultbigplayerimage" />
+
+    <ImageView
+        android:id="@+id/jercey_image"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="1:1.33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:srcCompat="@drawable/numberjersey" />
+
+    <TextView
+        android:id="@+id/player_number"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="@font/nunito_bold"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/jercey_image"
+        app:layout_constraintEnd_toEndOf="@+id/jercey_image"
+        app:layout_constraintStart_toStartOf="@+id/jercey_image"
+        app:layout_constraintTop_toTopOf="@+id/jercey_image"
+        tools:text="23" />
+
+    <TextView
+        android:id="@+id/player_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_extrabold"
+        android:gravity="start"
+        android:lines="2"
+        android:textColor="@color/colorPrimary"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView_age"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/jercey_image"
+        app:layout_constraintTop_toBottomOf="@+id/jercey_image"
+        tools:text="Andreas von Uthman" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_age"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="15dp"
+        app:cardBackgroundColor="@color/white95"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/player_eos_background"
+        app:layout_constraintEnd_toStartOf="@+id/cardView_height"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player_eos_background">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white95">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/age"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/player_age_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_extrabold"
+                android:gravity="end"
+                android:textSize="24sp"
+                tools:text="23" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_height"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="#F2FFFFFF"
+
+        app:layout_constraintBottom_toBottomOf="@+id/cardView_age"
+        app:layout_constraintEnd_toStartOf="@+id/cardView4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cardView_age"
+        app:layout_constraintTop_toTopOf="@+id/cardView_age">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/height"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/player_height_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_extrabold"
+                android:gravity="end"
+                android:textSize="24sp"
+                tools:text="198" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="15dp"
+        app:cardBackgroundColor="@color/white95"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cardView_height"
+        app:layout_constraintTop_toTopOf="@+id/cardView_height">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/position"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/player_position_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_extrabold"
+                android:gravity="end"
+                android:lines="1"
+                android:textSize="20sp"
+                tools:text="Forward" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_nationality"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        app:cardBackgroundColor="@color/white95"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/cardView_inEosFrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_age">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/nationality"
+               />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/player_nationality_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_extrabold"
+                android:gravity="end"
+                android:textSize="24sp"
+                tools:text="🇸🇪" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_inEosFrom"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="@color/white95"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView_nationality"
+        app:layout_constraintEnd_toStartOf="@+id/cardView_original_club"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cardView_nationality"
+        app:layout_constraintTop_toTopOf="@+id/cardView_nationality">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/in_eos_from"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/player_ineosfrom_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_extrabold"
+                android:gravity="end"
+                android:textSize="24sp"
+                tools:text="2018" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_original_club"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="15dp"
+        app:cardBackgroundColor="@color/white95"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView_inEosFrom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cardView_inEosFrom"
+        app:layout_constraintTop_toTopOf="@+id/cardView_inEosFrom">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="@string/original_club"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/player_original_club_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/nunito_extrabold"
+                android:gravity="end"
+                android:lines="1"
+                android:textSize="20sp"
+                tools:text="BMS Harlev" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/clear"
+        android:onClick="arrowOnClick"
+        android:padding="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/left_arrow" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/clear"
+        android:fontFamily="@font/nunito"
+        android:gravity="start"
+        android:insetLeft="6dp"
+        android:insetTop="0dp"
+        android:insetRight="6dp"
+        android:insetBottom="0dp"
+        android:minHeight="0dp"
+        android:onClick="backButtonPressed"
+        android:padding="0dp"
+        android:text="@string/back"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
