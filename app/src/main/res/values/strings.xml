@@ -11,6 +11,7 @@
     <string name="all_teams">ALL</string>
     <string name="game_place">%1$s, %2$s</string>
     <string name="scores">%1$d : %2$d</string>
+    <string name="match_time">%1$s, %2$s</string>
     <string name="home">Home</string>
     <string name="away">Away</string>
     <string name="progress_view_update_percent">%1$s</string>

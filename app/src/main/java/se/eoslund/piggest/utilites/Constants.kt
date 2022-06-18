@@ -52,6 +52,6 @@ object Constants {
     const val PLAYERS_REF = "players"
 
 
-    val EOS_TEAM: TeamFSO = TeamFSO("Eos Basket","Eos Basket", "Lund", "Eoshallen","eosLogo.png")
+    val EOS_TEAM: TeamFSO = TeamFSO("Eos Basket","Eos Basket", "Lund", "Eoshallen","eos_logo")
 
 }

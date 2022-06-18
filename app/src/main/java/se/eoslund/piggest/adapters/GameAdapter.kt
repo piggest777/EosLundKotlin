@@ -1,6 +1,8 @@
 package se.eoslund.piggest.adapters
 
+import android.graphics.drawable.Drawable
 import android.provider.Settings.Global.getString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -13,7 +15,9 @@ import se.eoslund.piggest.controller.App
 import se.eoslund.piggest.model.Game
 import se.eoslund.piggest.model.TeamRO
 import se.eoslund.piggest.R
+import se.eoslund.piggest.services.DataService
 import se.eoslund.piggest.services.DataService.getResource
+import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
 import se.eoslund.piggest.utilites.Constants.EOS_TEAM
@@ -36,66 +40,40 @@ class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)->
         private val awayWinnerArrow: ImageView = itemView.findViewById(R.id.game_list_item_guest_winner_arrow)
 
         fun bindGame(game: Game) {
-            //todo: think about left/right side func
-            val oppTeam =  TeamRO.getTeamById(game.oppositeTeamCode)
+
+            val lsTeam: TeamRO
+            val rsTeam: TeamRO
+
+            if (game.isHomeGame) {
+                lsTeam = TeamRO(EOS_TEAM.id, EOS_TEAM.name, EOS_TEAM.city, EOS_TEAM.homeArena, EOS_TEAM.logoPath)
+                rsTeam = TeamRO.getTeamById(game.rsTeamCode)
+            } else {
+                rsTeam = TeamRO(EOS_TEAM.id, EOS_TEAM.name, EOS_TEAM.city, EOS_TEAM.homeArena, EOS_TEAM.logoPath)
+                lsTeam = TeamRO.getTeamById(game.lsTeamCode)
+            }
+
 
             val curDate = Date()
-            val leftSideScores: Int
-            val rightSideScores: Int
-
-            val oppTeamLogo = App.instance.getResource(oppTeam.logoPathName)
-            val defaultTeamLogo = R.drawable.default_image_logo
+            val lsTeamLogo = DataService.setUpTeamLogo(lsTeam.logoPathName.toSnakeCase())
+            val rsTeamLogo = DataService.setUpTeamLogo(rsTeam.logoPathName.toSnakeCase())
 
             resultDateTV.text = DateFormatter.getFormattedDate(game.gameDateAndTime, DateFormat.DAY_AND_MONTH)
             matchDateTV.text = DateFormatter.getFormattedDate(game.gameDateAndTime, DateFormat.DATE)
             matchTimeTV.text = DateFormatter.getFormattedDate(game.gameDateAndTime, DateFormat.TIME)
 
-            if(game.isHomeGame) {
-                homeTeamLogo.setImageResource(R.drawable.eos_logo)
-                //todo: Rewrite image assign way
-               if(oppTeamLogo == null){
-                   awayTeamLogo.setImageResource(defaultTeamLogo)
-                }else {
-                    awayTeamLogo.setImageDrawable(oppTeamLogo)
-               }
-                awayTeamLogo.setImageResource(R.drawable.default_image_logo)
-                leftSideScores = game.eosScore.toInt()
-                rightSideScores = game.oppositeTeamScore.toInt()
-                scoresTV.text = App.instance.getString(R.string.scores,leftSideScores, rightSideScores)
-                homeTeamNameTV.text = EOS_TEAM.name
-                awayTeamNameTV.text = oppTeam.name
-                placeTV.text = App.instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
+            homeTeamLogo.setImageDrawable(lsTeamLogo)
+            awayTeamLogo.setImageDrawable(rsTeamLogo)
+            scoresTV.text = App.instance.getString(R.string.scores,game.lsScores, game.rsScores)
+            homeTeamNameTV.text = lsTeam.name
+            awayTeamNameTV.text = rsTeam.name
+            placeTV.text = App.instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
 
-                if (curDate>game.gameDateAndTime && game.eosScore > game.oppositeTeamScore) {
-                    homeWinnerArrow.visibility = VISIBLE
-                    awayWinnerArrow.visibility = INVISIBLE
-                } else if (curDate>game.gameDateAndTime && game.eosScore < game.oppositeTeamScore) {
-                    homeWinnerArrow.visibility = INVISIBLE
-                    awayWinnerArrow.visibility = VISIBLE
-                }
-
-            } else {
-                if(oppTeamLogo == null){
-                    homeTeamLogo.setImageResource(defaultTeamLogo)
-                }else {
-                    homeTeamLogo.setImageDrawable(oppTeamLogo)
-                }
-                awayTeamLogo.setImageResource(R.drawable.eos_logo)
-
-                leftSideScores = game.oppositeTeamScore.toInt()
-                rightSideScores = game.eosScore.toInt()
-                scoresTV.text = App.instance.getString(R.string.scores, leftSideScores, rightSideScores)
-                homeTeamNameTV.text = oppTeam.name
-                awayTeamNameTV.text = EOS_TEAM.name
-                placeTV.text = App.instance.getString(R.string.game_place, oppTeam.city, oppTeam.homeArena)
-
-                if (curDate>game.gameDateAndTime && game.eosScore < game.oppositeTeamScore) {
-                    homeWinnerArrow.visibility = VISIBLE
-                    awayWinnerArrow.visibility = INVISIBLE
-                } else if (curDate>game.gameDateAndTime && game.eosScore > game.oppositeTeamScore) {
-                    homeWinnerArrow.visibility = INVISIBLE
-                    awayWinnerArrow.visibility = VISIBLE
-                }
+            if (curDate > game.gameDateAndTime && game.lsScores < game.rsScores) {
+                homeWinnerArrow.visibility = VISIBLE
+                awayWinnerArrow.visibility = INVISIBLE
+            } else if (curDate > game.gameDateAndTime && game.lsScores > game.rsScores) {
+                homeWinnerArrow.visibility = INVISIBLE
+                awayWinnerArrow.visibility = VISIBLE
             }
 
             when {
@@ -113,20 +91,20 @@ class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)->
                 }
             }
 
-            when {
-                leftSideScores > rightSideScores -> {
-                    homeWinnerArrow.visibility = VISIBLE
-                    awayWinnerArrow.visibility = INVISIBLE
-                }
-                leftSideScores < rightSideScores -> {
-                    homeWinnerArrow.visibility = INVISIBLE
-                    awayWinnerArrow.visibility = VISIBLE
-                }
-                else -> {
-                    homeWinnerArrow.visibility = INVISIBLE
-                    awayWinnerArrow.visibility = VISIBLE
-                }
-            }
+//            when {
+//                leftSideScores > rightSideScores -> {
+//                    homeWinnerArrow.visibility = VISIBLE
+//                    awayWinnerArrow.visibility = INVISIBLE
+//                }
+//                leftSideScores < rightSideScores -> {
+//                    homeWinnerArrow.visibility = INVISIBLE
+//                    awayWinnerArrow.visibility = VISIBLE
+//                }
+//                else -> {
+//                    homeWinnerArrow.visibility = INVISIBLE
+//                    awayWinnerArrow.visibility = VISIBLE
+//                }
+//            }
             itemView.setOnClickListener{ itemClick(game) }
         }
     }

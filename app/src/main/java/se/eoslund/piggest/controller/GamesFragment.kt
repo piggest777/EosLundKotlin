@@ -120,8 +120,9 @@ class GamesFragment : Fragment() {
             setListener()
         }
 
-        adapter = GameAdapter(gameArray) {
-            Intent(App.instance, MatchActivity::class.java)
+        adapter = GameAdapter(gameArray) { game ->
+            Intent(instance, MatchActivity::class.java)
+                .putExtra("game", game)
                 .apply { startActivity(this) }
         }
         gamesList.adapter = adapter
@@ -175,9 +176,7 @@ class GamesFragment : Fragment() {
                         }
                     }
                     }
-
                 nextGameInfo()
-
         }
 
     }
@@ -209,9 +208,10 @@ class GamesFragment : Fragment() {
     fun nextGameInfo() {
         val nextGame = getNextGame() ?: return
         //todo: implement noGameCover
+        //todo: fix team logo path issue
 
-        val oppTeam  = TeamRO.getTeamById(nextGame.oppositeTeamCode)
-        val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
+        val oppTeam: TeamRO
+
         val defaultTeamLogo = AppCompatResources.getDrawable(instance, R.drawable.default_image_logo)
 
         setTimer(nextGame.gameDateAndTime)
@@ -220,21 +220,22 @@ class GamesFragment : Fragment() {
         ngTimeTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.TIME)
 
         if (nextGame.isHomeGame) {
+            oppTeam = TeamRO.getTeamById(nextGame.rsTeamCode)
+            val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
             ngGamePlaceTextView.text = instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
             ngAwayLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
             ngHomeLogoImageView.setImageResource(R.drawable.eos_logo)
             ngHomeTeamNameTextView.text = EOS_TEAM.name
             ngAwayTeamNameTextView.text = oppTeam.name
-
         } else {
+            oppTeam = TeamRO.getTeamById(nextGame.lsTeamCode)
+            val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
             ngGamePlaceTextView.text = instance.getString(R.string.game_place, oppTeam.city, oppTeam.homeArena)
             ngHomeLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
             ngAwayLogoImageView.setImageResource(R.drawable.eos_logo)
             ngAwayTeamNameTextView.text = EOS_TEAM.name
             ngHomeTeamNameTextView.text = oppTeam.name
         }
-
-
     }
 
     private fun getNextGame(): Game? {
