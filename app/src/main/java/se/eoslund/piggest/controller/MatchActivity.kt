@@ -77,7 +77,7 @@ class MatchActivity : AppCompatActivity() {
         val numberOfTabs = 3
         tabLayout.tabMode = TabLayout.MODE_FIXED
         tabLayout.isInlineLabel = true
-        val adapter = TabsPagerAdapter(supportFragmentManager, lifecycle, numberOfTabs)
+        val adapter = TabsPagerAdapter(supportFragmentManager, lifecycle, numberOfTabs, game)
         tabViewPagerAdapter.adapter = adapter
         tabViewPagerAdapter.isUserInputEnabled = true
 

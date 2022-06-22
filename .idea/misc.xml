@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_match_description.xml" value="0.6734375" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_match_player_list.xml" value="0.6435137895812053" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_player.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_web_stats.xml" value="0.5681114551083591" />
         <entry key="app/src/main/res/drawable/btn_segmented_center.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/btn_segmented_left.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/btn_segmented_right.xml" value="0.5427083333333333" />
@@ -25,7 +29,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

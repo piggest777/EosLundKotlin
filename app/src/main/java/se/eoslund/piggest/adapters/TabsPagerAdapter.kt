@@ -6,34 +6,39 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import se.eoslund.piggest.controller.DemoFragment
+import se.eoslund.piggest.controller.MatchDescriptionFragment
+import se.eoslund.piggest.controller.PlayerMatchFragment
+import se.eoslund.piggest.controller.WebStatsFragment
+import se.eoslund.piggest.model.Game
+import se.eoslund.piggest.utilites.Constants.GAME_DESCRIPTION
+import se.eoslund.piggest.utilites.Constants.STATISTIC_LINK
+import se.eoslund.piggest.utilites.Constants.TEAM_LEAGUE
 
-class TabsPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle, private var numberOfTabs: Int) : FragmentStateAdapter(fm, lifecycle) {
-
+class TabsPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle, private var numberOfTabs: Int,
+                       private val match: Game
+) : FragmentStateAdapter(fm, lifecycle) {
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> {
-                // # Music Fragment
                 val bundle = Bundle()
-                bundle.putString("fragmentName", "Music Fragment")
-                val musicFragment = DemoFragment()
-                musicFragment.arguments = bundle
-                return musicFragment
+                bundle.putString(STATISTIC_LINK, match.statsLink)
+                val webStatsFragment = WebStatsFragment()
+                webStatsFragment.arguments = bundle
+                return webStatsFragment
             }
             1 -> {
-                // # Movies Fragment
                 val bundle = Bundle()
-                bundle.putString("fragmentName", "Movies Fragment")
-                val moviesFragment = DemoFragment()
-                moviesFragment.arguments = bundle
-                return moviesFragment
+                bundle.putString(TEAM_LEAGUE, match.teamLeague)
+                val playersListFragment = PlayerMatchFragment()
+                playersListFragment.arguments = bundle
+                return playersListFragment
             }
             2 -> {
-                // # Books Fragment
                 val bundle = Bundle()
-                bundle.putString("fragmentName", "Books Fragment")
-                val booksFragment = DemoFragment()
-                booksFragment.arguments = bundle
-                return booksFragment
+                bundle.putString(GAME_DESCRIPTION, match.gameDescription)
+                val matchDescriptionFragment = MatchDescriptionFragment()
+                matchDescriptionFragment.arguments = bundle
+                return matchDescriptionFragment
             }
             else -> return DemoFragment()
         }
