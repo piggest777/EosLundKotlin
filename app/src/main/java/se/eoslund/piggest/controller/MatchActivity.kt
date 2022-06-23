@@ -84,17 +84,17 @@ class MatchActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, tabViewPagerAdapter) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "Music"
-                    tab.setIcon(R.drawable.games)
+                    tab.text = "Stats"
+                    tab.setIcon(R.drawable.icons8_statistics_64)
                 }
                 1 -> {
-                    tab.text = "Movies"
-                    tab.setIcon(R.drawable.games)
+                    tab.text = "Players"
+                    tab.setIcon(R.drawable.team)
 
                 }
                 2 -> {
-                    tab.text = "Books"
-                    tab.setIcon(R.drawable.games)
+                    tab.text = "About"
+                    tab.setIcon(R.drawable.icons8_article_64)
                 }
 
             }

@@ -29,7 +29,7 @@
         android:gravity="center_vertical"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/player_subline"
+        app:layout_constraintBottom_toTopOf="@+id/playerSubline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/item_number"
@@ -39,10 +39,11 @@
         tools:text="Sofie Ljungcrantz, G" />
 
     <TextView
-        android:id="@+id/player_subline"
+        android:id="@+id/playerSubline"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="15dp"
+        android:layout_marginVertical="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/content"
         app:layout_constraintHorizontal_bias="0.5"
@@ -50,7 +51,7 @@
         app:layout_constraintStart_toEndOf="@+id/item_number"
         app:layout_constraintTop_toBottomOf="@+id/content"
         tools:text = "Year: 2000, Height: 170"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:gravity="center_vertical"/>
 
     <View

@@ -8,6 +8,7 @@ import android.widget.TextView
 import se.eoslund.piggest.controller.placeholder.PlaceholderContent.PlaceholderItem
 import se.eoslund.piggest.databinding.FragmentPlayerBinding
 import se.eoslund.piggest.model.PlayerRO
+import se.eoslund.piggest.services.DateFormatter
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -32,6 +33,16 @@ class MatchPlayerRecyclerViewAdapter(
         val item = values[position]
         holder.idView.text = item.number.toString()
         holder.contentView.text = item.name
+
+        val sublineString = StringBuilder()
+        if (item.dayOfBirth != null) {
+            val age = DateFormatter.getAge(item.dayOfBirth!!)
+            sublineString.append("Age: $age")
+        }
+        if (item.height != null) {
+            sublineString.append(" Height: ${item.height} cm")
+        }
+        holder.subLineView.text = sublineString.toString()
     }
 
     override fun getItemCount(): Int = values.size
@@ -39,6 +50,7 @@ class MatchPlayerRecyclerViewAdapter(
     inner class ViewHolder(binding: FragmentPlayerBinding) : RecyclerView.ViewHolder(binding.root) {
         val idView: TextView = binding.itemNumber
         val contentView: TextView = binding.content
+        val subLineView: TextView = binding.playerSubline
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"

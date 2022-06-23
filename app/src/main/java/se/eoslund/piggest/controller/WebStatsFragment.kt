@@ -52,6 +52,7 @@ class WebStatsFragment : Fragment() {
             loadUrl("https://fibalivestats.dcd.shared.geniussports.com/u/SBF/1942599/index.html")
             settings.javaScriptEnabled = true
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+
             // webViewClient = MyWebViewClient(requireActivity().applicationContext, binding.progressBar, binding.errorAnim)
         }
     }

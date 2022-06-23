@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import se.eoslund.piggest.R
 import se.eoslund.piggest.adapters.MatchPlayerRecyclerViewAdapter
 import se.eoslund.piggest.model.PlayerRO
@@ -32,27 +33,38 @@ class PlayerMatchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_match_player_list, container, false)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                val league = arguments?.getString(TEAM_LEAGUE)
+        val league = arguments?.getString(TEAM_LEAGUE)
 
-                val games = league?.let { PlayerRO.getPlayersFromLeague(it) }
-
-                if (games != null) {
-                   adapter = MatchPlayerRecyclerViewAdapter(games)
-                }
-
-              //  adapter = MatchPlayerRecyclerViewAdapter(games)
-            }
+        val games = league?.let { PlayerRO.getPlayersFromLeague(it) }
+        if ( games == null) {
+           val view = inflater.inflate(R.layout.fragment_demo, container, false)
+            val textView = view.findViewById<TextView>(R.id.fragment_name)
+            textView.text = getString(R.string.no_playeres_found)
+            return view
+        } else if (games.isEmpty()) {
+            val view = inflater.inflate(R.layout.fragment_demo, container, false)
+            val textView = view.findViewById<TextView>(R.id.fragment_name)
+            textView.text = getString(R.string.no_playeres_found)
+            return view
         }
-        return view
+        else {
+            val view = inflater.inflate(R.layout.fragment_match_player_list, container, false)
+
+            // Set the adapter
+            if (view is RecyclerView) {
+                with(view) {
+                    layoutManager = when {
+                        columnCount <= 1 -> LinearLayoutManager(context)
+                        else -> GridLayoutManager(context, columnCount)
+                    }
+                    adapter = MatchPlayerRecyclerViewAdapter( games)
+                }
+            }
+            return view
+        }
+
+
     }
 
     companion object {
