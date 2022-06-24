@@ -63,4 +63,5 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     implementation 'com.airbnb.android:lottie:3.7.0'
+    implementation 'org.jsoup:jsoup:1.14.3'
 }

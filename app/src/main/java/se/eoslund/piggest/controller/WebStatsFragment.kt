@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import se.eoslund.piggest.R
 import se.eoslund.piggest.databinding.FragmentWebStatsBinding
+import se.eoslund.piggest.services.MyWebViewClient
+import se.eoslund.piggest.utilites.Constants.STATISTIC_LINK
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +30,7 @@ class WebStatsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentWebStatsBinding
+    private var statsLink: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,20 +45,34 @@ class WebStatsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentWebStatsBinding.inflate(inflater, container, false)
-        return binding.root
+         statsLink = arguments?.getString(STATISTIC_LINK)
+
+        return if (statsLink == null) {
+            val view = inflater.inflate(R.layout.fragment_demo, container, false)
+            val textView = view.findViewById<TextView>(R.id.fragment_name)
+            textView.text = "No statistic is available"
+            view
+        } else {
+            binding = FragmentWebStatsBinding.inflate(inflater, container, false)
+            binding.root
+        }
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        with(binding.statsWebView) {
-            loadUrl("https://fibalivestats.dcd.shared.geniussports.com/u/SBF/1942599/index.html")
-            settings.javaScriptEnabled = true
-            settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
 
-            // webViewClient = MyWebViewClient(requireActivity().applicationContext, binding.progressBar, binding.errorAnim)
+        if (statsLink != null) {
+            super.onViewCreated(view, savedInstanceState)
+            with(binding.statsWebView) {
+                loadUrl(statsLink!!)
+                settings.javaScriptEnabled = true
+                settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+
+                webViewClient = MyWebViewClient(requireActivity().applicationContext, binding.progressBar, binding.errorAnim)
+            }
         }
+
     }
 
     companion object {
