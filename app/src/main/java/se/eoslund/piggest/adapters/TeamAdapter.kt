@@ -17,9 +17,9 @@ class TeamAdapter(private val players: MutableList<PlayerRO>, private val itemCl
     inner class PlayerHolder(itemView: View, val itemClick: (PlayerRO) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         private val playerImage =  itemView.findViewById<ImageView>(R.id.player_image_view)
-        private val playerName: TextView = itemView.findViewById(R.id.teams_player_name)
-        private val playerNumber: TextView = itemView.findViewById(R.id.teams_player_number)
-        private val playerPosition: TextView = itemView.findViewById(R.id.teams_player_position)
+        private val playerName: TextView = itemView.findViewById(R.id.news_title)
+        private val playerNumber: TextView = itemView.findViewById(R.id.news_date)
+        private val playerPosition: TextView = itemView.findViewById(R.id.news_content)
 
         fun bindView(player: PlayerRO) {
 

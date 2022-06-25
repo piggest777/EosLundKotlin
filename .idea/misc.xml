@@ -5,10 +5,14 @@
       <map>
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/activity_match.xml" value="0.3848958333333333" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_demo.xml" value="0.660367722165475" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_games.xml" value="0.6734375" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_match_description.xml" value="0.6734375" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_match_player_list.xml" value="0.6435137895812053" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_news.xml" value="0.536" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_player.xml" value="0.19488817891373802" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_web_stats.xml" value="0.5681114551083591" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/news_list_item.xml" value="0.6723958333333333" />
+        <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/team_player_item.xml" value="0.6734375" />
         <entry key="app/src/main/res/drawable/btn_segmented_center.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/btn_segmented_left.xml" value="0.5427083333333333" />
         <entry key="app/src/main/res/drawable/btn_segmented_right.xml" value="0.5427083333333333" />
