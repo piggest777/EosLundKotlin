@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.android.tools.build.jetifier.core.utils.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,6 +14,13 @@ import se.eoslund.piggest.R
 import se.eoslund.piggest.adapters.NewsAdapter
 import se.eoslund.piggest.databinding.FragmentNewsBinding
 import se.eoslund.piggest.model.News
+import se.eoslund.piggest.model.SearchListData
+import se.eoslund.piggest.services.YTApiClient
+import se.eoslund.piggest.services.YTApiInterface
+import se.eoslund.piggest.utilites.Constants.YT_API_KEY
+import se.eoslund.piggest.utilites.Constants.YT_CHANNEL_ID
+import se.eoslund.piggest.utilites.Constants.YT_ORDER
+import se.eoslund.piggest.utilites.Constants.YT_PART
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +43,12 @@ class NewsFragment : Fragment() {
     lateinit var newsAdapter: NewsAdapter
     private lateinit var binding: FragmentNewsBinding
 
+    private val ytMaxResult = 50
+
+    var data: SearchListData? = null
+    var playList: List<SearchListData.Items>? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -49,37 +61,84 @@ class NewsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        newsList.clear()
         binding = FragmentNewsBinding.inflate(inflater, container, false)
-        newsAdapter = NewsAdapter(newsList) {
+        getNews()
+        binding.newsRadioButton.isChecked = true
+        binding.radioGroupNews.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.news_radio_button -> {
+                    newsList.clear()
+                    segmentControlStatus = NewsStatus.NEWS
+                    pageNumber = 1
+                    getNews()
+                }
+                R.id.video_radio_button -> {
+                    newsList.clear()
+                    segmentControlStatus = NewsStatus.VIDEO
+                    pageNumber = 1
+                    getVideo()
+                }
+            }
+        }
 
-            val url = "https://www.eoslund.se/$it.link"
+        newsAdapter = NewsAdapter(newsList) {
+            val baseURl = if (segmentControlStatus == NewsStatus.NEWS) {
+                "https://www.eoslund.se/"
+            } else {
+                "https://youtu.be/"
+            }
+
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container, WebStatsFragment.newInstance("https://www.eoslund.se/${it.link}"))
+                .replace(R.id.fragment_container, WebStatsFragment.newInstance("$baseURl${it.link}"))
                 .commitNow()
         }
         binding.newsList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         binding.newsList.adapter = newsAdapter
 
-//        Thread {
-//            val doc = Jsoup.connect(url).get()
-//           parseHtml(doc)
-//
-//        }.start()
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                getHtml(url)
-            }
-            newsAdapter.notifyDataSetChanged()
-        }
         return binding.root
 
     }
 
-    private fun getHtml(url: String) {
+     private fun getNews() {
+         lifecycleScope.launch {
+             withContext(Dispatchers.IO) {
+                 getNewsHtml(url)
+             }
+             newsAdapter.notifyDataSetChanged()
+         }
+     }
+
+    private fun getVideo() {
+        val apiInterface = YTApiClient.client?.create(YTApiInterface::class.java)
+        val apiCall = apiInterface?.getList(YT_API_KEY, YT_CHANNEL_ID, YT_PART, YT_ORDER, ytMaxResult)
+        apiCall?.enqueue(object : retrofit2.Callback<SearchListData> {
+            override fun onFailure(call: retrofit2.Call<SearchListData>, t: Throwable) {
+                println("Error: ${t.message}")
+            }
+
+            override fun onResponse(call: retrofit2.Call<SearchListData>, response: retrofit2.Response<SearchListData>) {
+                data = response.body()
+                playList = data?.items
+                newsList.clear()
+                playList?.forEach {
+
+                    val title = it.snippet?.title ?: ""
+                    val description = it.snippet?.description ?: ""
+                    val imageLink = it.snippet?.thumbnails?.medium?.url ?: ""
+                    val link = it.id?.videoId ?: ""
+                    val publishedTime = it.snippet?.publishedAt ?: ""
+                    newsList.add(News(title,description,imageLink,publishedTime,link))
+                }
+                newsAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    private fun getNewsHtml(url: String) {
         val doc = Jsoup.connect(url).get()
         parseHtml(doc)
     }
@@ -119,5 +178,11 @@ class NewsFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
+        var segmentControlStatus: NewsStatus = NewsStatus.NEWS
     }
+}
+
+enum class NewsStatus {
+    NEWS, VIDEO
 }

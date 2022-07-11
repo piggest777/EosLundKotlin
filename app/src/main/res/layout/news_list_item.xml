@@ -26,12 +26,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
+                android:visibility="visible"
                 app:layout_constraintDimensionRatio="V,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/news_image" />
 
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/yt_player"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:visibility="invisible"
+                app:layout_constraintDimensionRatio="V,16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/yt_play_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/clear"
+                android:src="@drawable/play_button"
+                app:layout_constraintBottom_toBottomOf="@+id/news_image_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/news_image_view"
+                app:layout_constraintTop_toTopOf="@+id/news_image_view"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/news_title"

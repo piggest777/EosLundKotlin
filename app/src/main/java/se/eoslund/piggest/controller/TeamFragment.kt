@@ -67,11 +67,11 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_team, container, false)
         playerList = view.findViewById(R.id.team_recycle_view)
-        segmentControl = view.findViewById(R.id.radio_group_team)
+        segmentControl = view.findViewById(R.id.radio_group_news)
         progressView = view.findViewById(R.id.update_team_progress_view)
         progressView.progress = 0f
         progressView.visibility = View.GONE
-        val sbldRadioButton = view.findViewById<RadioButton>(R.id.sbld_team_radio_button)
+        val sbldRadioButton = view.findViewById<RadioButton>(R.id.news_radio_button)
         sbldRadioButton.isChecked = true
 
         segmentControl.setOnCheckedChangeListener { radioGroup, radioButtonID ->

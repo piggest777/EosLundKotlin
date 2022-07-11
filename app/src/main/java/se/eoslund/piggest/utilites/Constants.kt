@@ -54,4 +54,10 @@ object Constants {
 
     val EOS_TEAM: TeamFSO = TeamFSO("Eos Basket","Eos Basket", "Lund", "Eoshallen","eos_logo")
 
+
+    //youtube API
+    const val YT_API_KEY = "AIzaSyBxQ4uUEYTfTBp72F4EJzYueGLZa3v7Kmc"
+    const val YT_CHANNEL_ID = "UCfoQAv5xCoEEEutwU998--w"
+    const val YT_PART = "snippet,id"
+    const val YT_ORDER = "date"
 }

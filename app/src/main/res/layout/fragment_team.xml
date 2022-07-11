@@ -13,7 +13,7 @@
 
     <!-- TODO: Update blank fragment layout -->
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/news_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
     <RadioGroup
-        android:id="@+id/radio_group_team"
+        android:id="@+id/radio_group_news"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/sbld_team_radio_button"
+            android:id="@+id/news_radio_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,7 +65,7 @@
             android:textColor="@drawable/txt_segmented" />
 
         <RadioButton
-            android:id="@+id/be_team_radio_button"
+            android:id="@+id/video_radio_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -85,7 +85,7 @@
             android:layout_height="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintTop_toBottomOf="@+id/news_toolbar"
             app:progressView_autoAnimate="true"
             app:progressView_colorBackground="@color/white"
             app:progressView_colorProgress="@color/colorSecondary"

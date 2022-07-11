@@ -93,7 +93,7 @@ class GamesFragment : Fragment() {
         gamesList = view.findViewById(R.id.game_schedule_list)
         gamesList.itemAnimator = null
         radioGroup = view.findViewById(R.id.radioGroup)
-        val sbldRadioButton: RadioButton = view.findViewById(R.id.sbld_team_radio_button)
+        val sbldRadioButton: RadioButton = view.findViewById(R.id.news_radio_button)
         sbldRadioButton.isChecked = true
 
         //bing UI element
