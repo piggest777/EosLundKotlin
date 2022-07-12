@@ -97,7 +97,7 @@ class NewsFragment : Fragment() {
                         .beginTransaction()
                         .replace(R.id.fragment_container, WebStatsFragment.newInstance("$baseURl${it.link}"))
                         .addToBackStack(null)
-                        .commitNow()
+                        .commit()
                 }
                 NewsStatus.VIDEO -> {
                     Intent(App.instance, YoutubePlayerFullScreen::class.java)
