@@ -1,6 +1,8 @@
 package se.eoslund.piggest.adapters
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Lifecycle
 import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -21,11 +25,13 @@ import se.eoslund.piggest.adapters.NewsAdapter.NewsHolder
 import se.eoslund.piggest.controller.App
 import se.eoslund.piggest.controller.NewsFragment
 import se.eoslund.piggest.controller.NewsStatus
+import se.eoslund.piggest.controller.YoutubePlayerFullScreen
 import se.eoslund.piggest.databinding.NewsListItemBinding
 import se.eoslund.piggest.model.News
 
 class NewsAdapter(
     private val news: List<News>,
+    val lifecycle: Lifecycle,
     private val itemClick: (News) ->Unit) : RecyclerView.Adapter<NewsHolder>() {
 
     inner class NewsHolder(binding: NewsListItemBinding,  val itemClick: (News) -> Unit) : RecyclerView.ViewHolder(binding.root) {
@@ -36,6 +42,8 @@ class NewsAdapter(
         val newsButton: AppCompatButton = binding.newsButton
         val ytPlayerView: YouTubePlayerView = binding.ytPlayer
         val ytPlayButton: AppCompatImageButton= binding.ytPlayButton
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsHolder {
@@ -54,7 +62,7 @@ class NewsAdapter(
 
     override fun onBindViewHolder(holder:NewsHolder, position: Int) {
         val item = news[position]
-
+        lifecycle.addObserver(holder.ytPlayerView)
         when (NewsFragment.segmentControlStatus) {
             NewsStatus.NEWS -> {
                 holder.newsDate.visibility = View.VISIBLE
@@ -74,42 +82,12 @@ class NewsAdapter(
             NewsStatus.VIDEO -> {
                 Glide.with(holder.newsImage.context).load(item.imageLink).into(holder.newsImage)
                 holder.newsDate.visibility = View.INVISIBLE
-                holder.newsHeader.visibility = View.INVISIBLE
-                holder.newsBody.text = item.header
+                holder.newsHeader.text = item.header
                 holder.ytPlayButton.visibility = View.INVISIBLE
-                    holder.ytPlayerView.addYouTubePlayerListener(
-                        object : AbstractYouTubePlayerListener(){
-                            override fun onReady(youTubePlayer: YouTubePlayer) {
-                                holder.ytPlayButton.visibility = View.VISIBLE
-                                holder.ytPlayButton.setOnClickListener {
-                                    holder.newsImage.visibility = View.INVISIBLE
-                                    holder.ytPlayerView.visibility = View.VISIBLE
-                                    holder.ytPlayButton.visibility = View.INVISIBLE
-                                    youTubePlayer.loadVideo(item.link, 0f)
-                                }
+                holder.newsImage.setOnClickListener{
+                    itemClick(item)
+                }
 
-                            }
-
-                            override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
-                                super.onError(youTubePlayer, error)
-                                Toast.makeText(App.instance, error.name, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    )
-
-                holder.ytPlayerView.addFullScreenListener(object : YouTubePlayerFullScreenListener {
-                    override fun onYouTubePlayerEnterFullScreen() {
-                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                        holder.ytPlayerView.enterFullScreen()
-                    }
-
-                    override fun onYouTubePlayerExitFullScreen() {
-                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                        holder.ytPlayerView.exitFullScreen()
-                    }
-
-                })
-                holder.newsButton.setOnClickListener { itemClick(item) }
                 holder.newsButton.visibility = View.GONE
             }
         }

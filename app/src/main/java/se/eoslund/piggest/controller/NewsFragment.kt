@@ -1,5 +1,6 @@
 package se.eoslund.piggest.controller
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -82,19 +83,30 @@ class NewsFragment : Fragment() {
             }
         }
 
-        newsAdapter = NewsAdapter(newsList) {
+        newsAdapter = NewsAdapter(newsList, lifecycle) {
             val baseURl = if (segmentControlStatus == NewsStatus.NEWS) {
                 "https://www.eoslund.se/"
             } else {
                 "https://youtu.be/"
             }
 
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, WebStatsFragment.newInstance("$baseURl${it.link}"))
-                .commitNow()
+            when(segmentControlStatus){
+                NewsStatus.NEWS -> {
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, WebStatsFragment.newInstance("$baseURl${it.link}"))
+                        .addToBackStack(null)
+                        .commitNow()
+                }
+                NewsStatus.VIDEO -> {
+                    Intent(App.instance, YoutubePlayerFullScreen::class.java)
+                        .putExtra("videoID", it.link)
+                        .apply { startActivity(this) }
+                }
+            }
         }
+
         binding.newsList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         binding.newsList.adapter = newsAdapter
 

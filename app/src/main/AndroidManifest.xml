@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EosLund">
         <activity
+            android:name=".controller.YoutubePlayerFullScreen"
+            android:exported="false" />
+        <activity
             android:name=".controller.PlayerActivity"
             android:exported="false" />
         <activity
