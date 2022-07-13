@@ -42,7 +42,10 @@ object Constants {
     const val PLAYER_IN_EOS_FROM  = "playerInEOSFrom"
     const val PLAYER_BIG_IMAGE_URL = "playerBigImageUrl"
 
+//    URLS
     const val DEFAULT_IMAGE_URL = "gs://eoslund-4ceb4.appspot.com/defaultAvatar.png"
+    const val EOS_WEB_BASE_URL = "https://www.eoslund.se/"
+    const val EOS_NEWS_URL = "${EOS_WEB_BASE_URL}om-eos/nyheter?page="
 
     //refs
     const val GAMES_REF = "games"

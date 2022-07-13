@@ -12,7 +12,9 @@
         android:theme="@style/Theme.EosLund">
         <activity
             android:name=".controller.YoutubePlayerFullScreen"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".controller.PlayerActivity"
             android:exported="false" />

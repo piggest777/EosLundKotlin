@@ -62,6 +62,16 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/news_loading_animation"
+        app:lottie_fileName="loader-basketball.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsList"
         android:layout_width="match_parent"
