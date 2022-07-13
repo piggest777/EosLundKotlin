@@ -1,0 +1,78 @@
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"se.eoslund.piggest\">\n\n    <application\n        android:name=\".controller.App\"\n        android:allowBackup=\"true\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.EosLund\">\n        <activity\n            android:name=\".controller.YoutubePlayerFullScreen\"\n            android:exported=\"false\" />\n        <activity\n            android:name=\".controller.PlayerActivity\"\n            android:exported=\"false\" />\n        <activity\n            android:name=\".controller.MatchActivity\"\n            android:exported=\"false\" />\n        <activity\n            android:name=\".controller.MainActivity\"\n            android:exported=\"true\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n\n        <meta-data\n            android:name=\"preloaded_fonts\"\n            android:resource=\"@array/preloaded_fonts\" />\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision b002b4b6e6762570d291b4226dd7965c6770caed)
++++ b/app/src/main/AndroidManifest.xml	(date 1657641845000)
+@@ -12,7 +12,9 @@
+         android:theme="@style/Theme.EosLund">
+         <activity
+             android:name=".controller.YoutubePlayerFullScreen"
+-            android:exported="false" />
++            android:exported="false"
++            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
++            android:windowSoftInputMode="adjustPan"/>
+         <activity
+             android:name=".controller.PlayerActivity"
+             android:exported="false" />
+Index: app/src/main/java/se/eoslund/piggest/controller/YoutubePlayerFullScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package se.eoslund.piggest.controller\n\nimport androidx.appcompat.app.AppCompatActivity\nimport android.os.Bundle\nimport android.widget.Toast\nimport com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants\nimport com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer\nimport com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener\nimport com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener\nimport se.eoslund.piggest.R\nimport se.eoslund.piggest.databinding.ActivityYoutubePlayerBinding\n\nclass YoutubePlayerFullScreen : AppCompatActivity() {\n    private lateinit var _binding: ActivityYoutubePlayerBinding\n    private val binding get() = _binding\n    private var videoID = \"\"\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n\n        _binding = ActivityYoutubePlayerBinding.inflate(layoutInflater)\n        val view = binding.root\n        super.onCreate(savedInstanceState)\n        setContentView(view)\n\n        videoID = intent.getStringExtra(\"videoID\").toString()\n\n        lifecycle.addObserver(binding.ytPlayer)\n        binding.ytPlayer.apply {\n\n            binding.ytPlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {\n                override fun onReady(youTubePlayer: YouTubePlayer) {\n                    youTubePlayer.loadVideo(videoID, 0f)\n                }\n\n                override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {\n                    super.onError(youTubePlayer, error)\n                    Toast.makeText(App.instance, error.name, Toast.LENGTH_SHORT).show()\n                }\n\n                override fun onStateChange(\n                    youTubePlayer: YouTubePlayer,\n                    state: PlayerConstants.PlayerState\n                ) {\n                    if (state == PlayerConstants.PlayerState.ENDED) {\n                        finish()\n                    }\n                    super.onStateChange(youTubePlayer, state)\n                }\n            })\n\n            enterFullScreen()\n\n            addFullScreenListener(object : YouTubePlayerFullScreenListener {\n\n\n                override fun onYouTubePlayerEnterFullScreen() {\n\n                }\n\n                override fun onYouTubePlayerExitFullScreen() {\n                    finish()\n                }\n            })\n        }\n\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/se/eoslund/piggest/controller/YoutubePlayerFullScreen.kt b/app/src/main/java/se/eoslund/piggest/controller/YoutubePlayerFullScreen.kt
+--- a/app/src/main/java/se/eoslund/piggest/controller/YoutubePlayerFullScreen.kt	(revision b002b4b6e6762570d291b4226dd7965c6770caed)
++++ b/app/src/main/java/se/eoslund/piggest/controller/YoutubePlayerFullScreen.kt	(date 1657653081185)
+@@ -1,5 +1,6 @@
+ package se.eoslund.piggest.controller
+ 
++import android.content.res.Configuration
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
+ import android.widget.Toast
+@@ -58,11 +59,20 @@
+                 }
+ 
+                 override fun onYouTubePlayerExitFullScreen() {
+-                    finish()
++
+                 }
+             })
+         }
+ 
+ 
+     }
++
++    override fun onConfigurationChanged(newConfig: Configuration) {
++        super.onConfigurationChanged(newConfig)
++        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
++            binding.ytPlayer.enterFullScreen()
++        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
++            binding.ytPlayer.exitFullScreen()
++        }
++    }
+ }
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GradleSettings\">\n    <option name=\"linkedExternalProjectsSettings\">\n      <GradleProjectSettings>\n        <option name=\"testRunner\" value=\"GRADLE\" />\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"modules\">\n          <set>\n            <option value=\"$PROJECT_DIR$\" />\n            <option value=\"$PROJECT_DIR$/app\" />\n          </set>\n        </option>\n      </GradleProjectSettings>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision b002b4b6e6762570d291b4226dd7965c6770caed)
++++ b/.idea/gradle.xml	(date 1657706415745)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
