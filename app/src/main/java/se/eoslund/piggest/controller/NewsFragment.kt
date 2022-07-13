@@ -83,7 +83,7 @@ class NewsFragment : Fragment() {
             }
         }
 
-        newsAdapter = NewsAdapter(newsList, lifecycle) {
+        newsAdapter = NewsAdapter(newsList) {
             val baseURl = if (segmentControlStatus == NewsStatus.NEWS) {
                 "https://www.eoslund.se/"
             } else {
