@@ -28,7 +28,9 @@ import se.eoslund.piggest.adapters.GameAdapter
 import se.eoslund.piggest.controller.App.Companion.instance
 import se.eoslund.piggest.model.Game
 import se.eoslund.piggest.model.TeamRO
+import se.eoslund.piggest.services.DataService
 import se.eoslund.piggest.services.DataService.getResource
+import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
 import se.eoslund.piggest.utilites.Constants.ALL_LEAGUE
@@ -250,7 +252,7 @@ class GamesFragment : Fragment() {
 
             if (nextGame.isHomeGame) {
                 oppTeam = TeamRO.getTeamById(nextGame.rsTeamCode)
-                val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
+                val oppTeamLogo = DataService.setUpTeamLogo(oppTeam.logoPathName.toSnakeCase())
                 ngGamePlaceTextView.text = instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
                 ngAwayLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
                 ngHomeLogoImageView.setImageResource(R.drawable.eos_logo)
@@ -258,7 +260,7 @@ class GamesFragment : Fragment() {
                 ngAwayTeamNameTextView.text = oppTeam.name
             } else {
                 oppTeam = TeamRO.getTeamById(nextGame.lsTeamCode)
-                val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
+                val oppTeamLogo = DataService.setUpTeamLogo(oppTeam.logoPathName.toSnakeCase())
                 ngGamePlaceTextView.text = instance.getString(R.string.game_place, oppTeam.city, oppTeam.homeArena)
                 ngHomeLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
                 ngAwayLogoImageView.setImageResource(R.drawable.eos_logo)

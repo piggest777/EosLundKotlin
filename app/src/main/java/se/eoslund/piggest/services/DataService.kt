@@ -25,11 +25,10 @@ object DataService {
     }
 
     fun setUpTeamLogo(name: String) : Drawable {
+
         val logoDrawable = App.instance.getResource(name)
         return logoDrawable ?: AppCompatResources.getDrawable(App.instance, R.drawable.default_image_logo)!!
     }
-
-
 
     fun pngToByteArray(bitmap: Bitmap): ByteArray {
         val stream = ByteArrayOutputStream()
@@ -50,6 +49,7 @@ object DataService {
         var input = Normalizer.normalize(this, Normalizer.Form.NFD).lowercase()
         input = Regex("\\p{InCombiningDiacriticalMarks}+").replace(input, "")
         input = Regex("\\s+").replace(input, "_")
+        input = Regex("\\.\\w+$").replace(input, "")
 
         return input
     }
