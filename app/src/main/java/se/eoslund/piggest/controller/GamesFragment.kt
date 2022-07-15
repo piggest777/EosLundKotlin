@@ -1,8 +1,11 @@
 package se.eoslund.piggest.controller
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings.Global.getString
+import android.provider.Settings.System.getString
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,8 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -64,6 +70,11 @@ class GamesFragment : Fragment() {
     lateinit var ngDateTextView: TextView
     lateinit var ngTimeTextView: TextView
     lateinit var ngTimeCounterTextView: TextView
+    lateinit var comingSoonCard: CardView
+    lateinit var ngCard: CardView
+    lateinit var gamesLoadingAnim: LottieAnimationView
+    lateinit var comingSoonText: TextView
+    lateinit var comingSoonAnimationView: LottieAnimationView
     var countDownTimer: CountDownTimer? = null
 
 
@@ -105,6 +116,12 @@ class GamesFragment : Fragment() {
         ngDateTextView = view.findViewById(R.id.game_anons_date)
         ngTimeTextView = view.findViewById(R.id.game_anons_time)
         ngTimeCounterTextView = view.findViewById(R.id.game_anons_counter)
+        comingSoonCard = view.findViewById(R.id.comming_soon_card)
+        ngCard = view.findViewById(R.id.next_game_card_view)
+        gamesLoadingAnim = view.findViewById(R.id.games_loading_animation)
+        comingSoonAnimationView = view.findViewById(R.id.coming_soon_animation)
+        comingSoonText = view.findViewById(R.id.coming_soon_text)
+
 
         radioGroup.setOnCheckedChangeListener { radioGroup, radioButtonID ->
             val selectedRadioButton = radioGroup.findViewById<RadioButton>(radioButtonID)
@@ -129,6 +146,8 @@ class GamesFragment : Fragment() {
         gamesList.layoutManager = LinearLayoutManager(instance)
 
         gameArray.clear()
+        gamesLoadingAnim.visibility = View.VISIBLE
+        setupNextGameCard(true)
         setListener()
         return  view
     }
@@ -206,35 +225,46 @@ class GamesFragment : Fragment() {
     }
 
     fun nextGameInfo() {
-        val nextGame = getNextGame() ?: return
-        //todo: implement noGameCover
-        //todo: fix team logo path issue
+        gamesLoadingAnim.visibility = View.INVISIBLE
+        gamesLoadingAnim.pauseAnimation()
+        setupNextGameCard(false)
+        val nextGame = getNextGame()
 
-        val oppTeam: TeamRO
+        if (nextGame == null) {
+            comingSoonCard.visibility = View.VISIBLE
+            ngCard.visibility = View.INVISIBLE
+            comingSoonAnimationView.playAnimation()
 
-        val defaultTeamLogo = AppCompatResources.getDrawable(instance, R.drawable.default_image_logo)
-
-        setTimer(nextGame.gameDateAndTime)
-
-        ngDateTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.DATE)
-        ngTimeTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.TIME)
-
-        if (nextGame.isHomeGame) {
-            oppTeam = TeamRO.getTeamById(nextGame.rsTeamCode)
-            val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
-            ngGamePlaceTextView.text = instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
-            ngAwayLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
-            ngHomeLogoImageView.setImageResource(R.drawable.eos_logo)
-            ngHomeTeamNameTextView.text = EOS_TEAM.name
-            ngAwayTeamNameTextView.text = oppTeam.name
         } else {
-            oppTeam = TeamRO.getTeamById(nextGame.lsTeamCode)
-            val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
-            ngGamePlaceTextView.text = instance.getString(R.string.game_place, oppTeam.city, oppTeam.homeArena)
-            ngHomeLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
-            ngAwayLogoImageView.setImageResource(R.drawable.eos_logo)
-            ngAwayTeamNameTextView.text = EOS_TEAM.name
-            ngHomeTeamNameTextView.text = oppTeam.name
+            comingSoonCard.visibility = View.INVISIBLE
+            ngCard.visibility = View.VISIBLE
+
+            val oppTeam: TeamRO
+
+            val defaultTeamLogo = AppCompatResources.getDrawable(instance, R.drawable.default_image_logo)
+
+            setTimer(nextGame.gameDateAndTime)
+
+            ngDateTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.DATE)
+            ngTimeTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.TIME)
+
+            if (nextGame.isHomeGame) {
+                oppTeam = TeamRO.getTeamById(nextGame.rsTeamCode)
+                val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
+                ngGamePlaceTextView.text = instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
+                ngAwayLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
+                ngHomeLogoImageView.setImageResource(R.drawable.eos_logo)
+                ngHomeTeamNameTextView.text = EOS_TEAM.name
+                ngAwayTeamNameTextView.text = oppTeam.name
+            } else {
+                oppTeam = TeamRO.getTeamById(nextGame.lsTeamCode)
+                val oppTeamLogo = instance.getResource(oppTeam.logoPathName)
+                ngGamePlaceTextView.text = instance.getString(R.string.game_place, oppTeam.city, oppTeam.homeArena)
+                ngHomeLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
+                ngAwayLogoImageView.setImageResource(R.drawable.eos_logo)
+                ngAwayTeamNameTextView.text = EOS_TEAM.name
+                ngHomeTeamNameTextView.text = oppTeam.name
+            }
         }
     }
 
@@ -280,6 +310,23 @@ class GamesFragment : Fragment() {
             }
         }.start()
 
+    }
+
+    private fun setupNextGameCard(isLoading: Boolean) {
+        if (isLoading) {
+            comingSoonCard.visibility = View.VISIBLE
+            ngCard.visibility = View.INVISIBLE
+            comingSoonText.text = "LOADING..."
+            comingSoonAnimationView.setAnimation("basketball_net.json")
+        } else {
+            comingSoonCard.visibility = View.INVISIBLE
+            ngCard.visibility = View.VISIBLE
+            comingSoonText.text = instance.getString(R.string.coming_soon)
+            comingSoonAnimationView.setAnimation("finger_basketball.json")
+            comingSoonAnimationView.pauseAnimation()
+            gamesLoadingAnim.visibility = View.INVISIBLE
+            gamesLoadingAnim.pauseAnimation()
+        }
     }
 
     companion object {

@@ -114,4 +114,6 @@
     <string name="no_playeres_found">No players found</string>
     <string name="read_more">READ MORE</string>
     <string name="video">Video</string>
+    <string name="next_game">NEXT GAME</string>
+    <string name="coming_soon">COMING \n SOON</string>
 </resources>

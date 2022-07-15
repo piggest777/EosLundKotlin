@@ -12,6 +12,7 @@ import android.widget.RadioGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -50,6 +51,7 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
     private lateinit var playerList: RecyclerView
     private lateinit var adapter: TeamAdapter
     private lateinit var progressView: ProgressView
+    private lateinit var loadingAnim: LottieAnimationView
     private var playerArray = mutableListOf<PlayerRO>()
     private var fsPlayerArray = mutableListOf<Player>()
     private lateinit var segmentControl: RadioGroup
@@ -69,6 +71,7 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
         playerList = view.findViewById(R.id.team_recycle_view)
         segmentControl = view.findViewById(R.id.radio_group_news)
         progressView = view.findViewById(R.id.update_team_progress_view)
+        loadingAnim = view.findViewById(R.id.team_loading_animation)
         progressView.progress = 0f
         progressView.visibility = View.GONE
         val sbldRadioButton = view.findViewById<RadioButton>(R.id.news_radio_button)
@@ -219,6 +222,8 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
         progressView.progressFromPrevious = false
         progressView.min = 5f
 
+        loadingAnim.visibility = View.VISIBLE
+
         players.forEach { player ->
             if (player.imageUrl == null) {
                 playersRealm.add(mapPlayerFSOtoRO(player, null))
@@ -243,6 +248,7 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                 PlayerRO.addAllPlayersWithCallback(playersRealm) { success ->
                     if (success) {
                         progressView.visibility = View.GONE
+                        loadingAnim.visibility = View.GONE
                         prefs.playersUpdateDate = Date().time
                         playerArray.clear()
                         playerArray.addAll(PlayerRO.getPlayersFromLeague(chosenLeague))

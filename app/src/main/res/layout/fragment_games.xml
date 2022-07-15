@@ -104,18 +104,92 @@
         <!--            android:src="@drawable/sbld_default"/>-->
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/comming_soon_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/next_game_card_view"
+            app:layout_constraintEnd_toEndOf="@+id/next_game_card_view"
+            app:layout_constraintStart_toStartOf="@+id/next_game_card_view"
+            app:layout_constraintTop_toTopOf="@+id/next_game_card_view"
+            app:cardCornerRadius="20dp"
+            android:background="@drawable/card_gradient">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_gradient">
+
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/coming_soon_animation"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/coming_soon_text"
+                    app:layout_constraintTop_toBottomOf="@+id/game_CS_next_game"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="finger_basketball.json"
+                    app:lottie_loop="true" />
+
+                <TextView
+                    android:id="@+id/game_CS_next_game"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/rounded_rect"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:firstBaselineToTopHeight="0dp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:paddingTop="0pt"
+                    android:paddingBottom="0pt"
+                    android:text="@string/next_game"
+                    android:textSize="20sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/coming_soon_text"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:text="@string/coming_soon"
+                    android:textSize="40dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/coming_soon_animation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/game_CS_next_game" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/next_game_card_view"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="#E8FFFFFF"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/news_toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/news_toolbar"
+            tools:visibility="invisible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -135,7 +209,7 @@
                     android:includeFontPadding="false"
                     android:paddingTop="0pt"
                     android:paddingBottom="0pt"
-                    android:text="NEXT GAME"
+                    android:text="@string/next_game"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/game_anons_date"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,13 +225,13 @@
                     android:gravity="center"
                     android:text="@string/game_place"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.503"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/game_anons_counter"
-                    tools:text="Lund, \n Eoshallen"
-                    android:visibility="gone" />
+                    tools:text="Lund, \n Eoshallen" />
 
                 <ImageView
                     android:id="@+id/games_anons_home_logo_iv"
@@ -257,22 +331,31 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.40" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/game_schedule_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/teal_200"
+            android:layout_marginTop="10dp"
+            android:background="@color/white95"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+            app:layout_constraintTop_toBottomOf="@id/next_game_card_view" />
+
+        <com.airbnb.lottie.LottieAnimationView
+
+            android:id="@+id/games_loading_animation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/game_schedule_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/game_schedule_list"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loader-basketball.json"
+            app:lottie_loop="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -36,8 +36,8 @@ class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)->
         private val matchDateTV: TextView = itemView.findViewById(R.id.game_list_item_date_tv)
         private val matchTimeTV: TextView = itemView.findViewById(R.id.game_list_item_time)
         private val placeTV: TextView = itemView.findViewById(R.id.game_list_item_place)
-        private val homeWinnerArrow: ImageView = itemView.findViewById(R.id.game_list_item_home_winner_arrow)
-        private val awayWinnerArrow: ImageView = itemView.findViewById(R.id.game_list_item_guest_winner_arrow)
+        private val homeWinnerArrow: ImageView = itemView.findViewById(R.id.left_winner_arrow)
+        private val awayWinnerArrow: ImageView = itemView.findViewById(R.id.right_winner_arrow)
 
         fun bindGame(game: Game) {
 
@@ -68,12 +68,15 @@ class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)->
             awayTeamNameTV.text = rsTeam.name
             placeTV.text = App.instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
 
-            if (curDate > game.gameDateAndTime && game.lsScores < game.rsScores) {
+            if (curDate > game.gameDateAndTime && game.lsScores > game.rsScores) {
                 homeWinnerArrow.visibility = VISIBLE
                 awayWinnerArrow.visibility = INVISIBLE
-            } else if (curDate > game.gameDateAndTime && game.lsScores > game.rsScores) {
+            } else if (curDate > game.gameDateAndTime && game.lsScores < game.rsScores) {
                 homeWinnerArrow.visibility = INVISIBLE
                 awayWinnerArrow.visibility = VISIBLE
+            } else {
+                homeWinnerArrow.visibility = INVISIBLE
+                awayWinnerArrow.visibility = INVISIBLE
             }
 
             when {

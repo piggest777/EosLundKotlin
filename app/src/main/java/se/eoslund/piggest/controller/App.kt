@@ -30,14 +30,14 @@ class App: Application() {
 
         Realm.init(instance)
         val realmName: String = "EosRealmBase"
-        var realmConfig = RealmConfiguration.Builder().name(realmName).build()
+        val realmConfig = RealmConfiguration.Builder().name(realmName).build()
         val backgroundThreadRealm : Realm = Realm.getInstance(realmConfig)
         Realm.setDefaultConfiguration(realmConfig)
 
 
         val db = Firebase.firestore
         val docRef = db.collection("teams")
-         var date = prefs!!.teamUpdateDate
+         val date = prefs!!.teamUpdateDate
         Log.d("PREFS", "current date is $date")
 
         FirebaseApp.initializeApp(/*context=*/this)
@@ -92,6 +92,8 @@ class App: Application() {
                                                     completionHandler(true)
                                                 }
                                              }
+                                } else{
+                                    Log.d("UPDATE", "no update needed")
                                 }
                             }
 
@@ -106,6 +108,7 @@ class App: Application() {
                 Log.d("UPDATE", "Updating team base")
                 updateTeamRealmBase { success ->
                     if(success) {
+                        updatePrefsToCurrentDate()
                         completionHandler(true)
                     }
                 }
@@ -127,6 +130,7 @@ class App: Application() {
         private fun updatePrefsToCurrentDate(){
             val currentDate = Date()
             prefs!!.teamUpdateDate = currentDate.time
+            Log.d("PREFS", "current date is ${prefs!!.teamUpdateDate}")
         }
 
 
