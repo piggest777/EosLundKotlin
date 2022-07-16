@@ -31,6 +31,19 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.5" />
 
+            <TextView
+                android:id="@+id/item_league_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/nunito_bold"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="SBLD" />
+
             <ImageView
                 android:id="@+id/list_home_team_logo_iv"
                 android:layout_width="0dp"

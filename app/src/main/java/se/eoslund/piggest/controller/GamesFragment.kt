@@ -1,20 +1,15 @@
 package se.eoslund.piggest.controller
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.provider.Settings.Global.getString
-import android.provider.Settings.System.getString
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
@@ -29,13 +24,11 @@ import se.eoslund.piggest.controller.App.Companion.instance
 import se.eoslund.piggest.model.Game
 import se.eoslund.piggest.model.TeamRO
 import se.eoslund.piggest.services.DataService
-import se.eoslund.piggest.services.DataService.getResource
 import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
-import se.eoslund.piggest.utilites.Constants.ALL_LEAGUE
+import se.eoslund.piggest.utilites.Constants.ALL_LEAGUES
 import se.eoslund.piggest.utilites.Constants.BE_DAM_LEAGUE
-import se.eoslund.piggest.utilites.Constants.EOS_TEAM
 import se.eoslund.piggest.utilites.Constants.GAMES_REF
 import se.eoslund.piggest.utilites.Constants.GAME_DATE_AND_TIME
 import se.eoslund.piggest.utilites.Constants.SBLD_LEAGUE
@@ -79,14 +72,13 @@ class GamesFragment : Fragment() {
     lateinit var comingSoonAnimationView: LottieAnimationView
     var countDownTimer: CountDownTimer? = null
 
-
-
     var gameArray  = mutableListOf<Game>()
-    private var chosenLeague = "SBLD"
 
 
     private val db = Firebase.firestore
     private val gamesReference  = db.collection(GAMES_REF)
+
+    var curGame: Game? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,13 +123,22 @@ class GamesFragment : Fragment() {
                 getString(R.string.sbld) -> SBLD_LEAGUE
                 getString(R.string.se_herr) -> SE_HERR_LEAGUE
                 getString(R.string.be_dam) -> BE_DAM_LEAGUE
-                getString(R.string.all_teams) -> ALL_LEAGUE
+                getString(R.string.all_teams) -> ALL_LEAGUES
                 else -> SBLD_LEAGUE
             }
             countDownTimer?.cancel()
             gameScheduleListener.remove()
+            gameArray.clear()
             setListener()
         }
+
+        ngCard.setOnClickListener(View.OnClickListener {
+            if (curGame != null) {
+                val intent = Intent(activity, MatchActivity::class.java)
+                intent.putExtra("game", curGame)
+                startActivity(intent)
+            }
+        })
 
         adapter = GameAdapter(gameArray) { game ->
             Intent(instance, MatchActivity::class.java)
@@ -169,7 +170,7 @@ class GamesFragment : Fragment() {
     }
 
     private fun setListener(){
-        val leaguePredicate = if (chosenLeague == ALL_LEAGUE) {
+        val leaguePredicate = if (chosenLeague == ALL_LEAGUES) {
             mutableListOf(SBLD_LEAGUE, SE_HERR_LEAGUE, BE_DAM_LEAGUE)
         } else {
             mutableListOf(chosenLeague)
@@ -182,12 +183,8 @@ class GamesFragment : Fragment() {
                 Log.w("FB_ERROR", "listen:error", e)
                 return@addSnapshotListener
             }
-                val currentSize = gameArray.size
-                gameArray.clear()
 
-                adapter.notifyItemRangeRemoved(0, currentSize)
-                adapter.notifyItemRangeInserted(0, snapshots!!.size())
-                for (dc in snapshots.documentChanges) {
+                for (dc in snapshots!!.documentChanges) {
                     val game = Game.parseGameFromSnapshot(dc.document)
                     game?.let {
                         when (dc.type) {
@@ -230,9 +227,9 @@ class GamesFragment : Fragment() {
         gamesLoadingAnim.visibility = View.INVISIBLE
         gamesLoadingAnim.pauseAnimation()
         setupNextGameCard(false)
-        val nextGame = getNextGame()
+        curGame = getNextGame()
 
-        if (nextGame == null) {
+        if (curGame == null) {
             comingSoonCard.visibility = View.VISIBLE
             ngCard.visibility = View.INVISIBLE
             comingSoonAnimationView.playAnimation()
@@ -241,32 +238,19 @@ class GamesFragment : Fragment() {
             comingSoonCard.visibility = View.INVISIBLE
             ngCard.visibility = View.VISIBLE
 
-            val oppTeam: TeamRO
+            setTimer(curGame!!.gameDateAndTime)
 
-            val defaultTeamLogo = AppCompatResources.getDrawable(instance, R.drawable.default_image_logo)
+            ngDateTextView.text = DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.DATE)
+            ngTimeTextView.text = DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.TIME)
 
-            setTimer(nextGame.gameDateAndTime)
+            val rsTeam = TeamRO.getTeamById(curGame!!.rsTeamCode)
+            val lsTeam = TeamRO.getTeamById(curGame!!.lsTeamCode)
 
-            ngDateTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.DATE)
-            ngTimeTextView.text = DateFormatter.getFormattedDate(nextGame.gameDateAndTime, DateFormat.TIME)
-
-            if (nextGame.isHomeGame) {
-                oppTeam = TeamRO.getTeamById(nextGame.rsTeamCode)
-                val oppTeamLogo = DataService.setUpTeamLogo(oppTeam.logoPathName.toSnakeCase())
-                ngGamePlaceTextView.text = instance.getString(R.string.game_place, EOS_TEAM.city, EOS_TEAM.homeArena)
-                ngAwayLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
-                ngHomeLogoImageView.setImageResource(R.drawable.eos_logo)
-                ngHomeTeamNameTextView.text = EOS_TEAM.name
-                ngAwayTeamNameTextView.text = oppTeam.name
-            } else {
-                oppTeam = TeamRO.getTeamById(nextGame.lsTeamCode)
-                val oppTeamLogo = DataService.setUpTeamLogo(oppTeam.logoPathName.toSnakeCase())
-                ngGamePlaceTextView.text = instance.getString(R.string.game_place, oppTeam.city, oppTeam.homeArena)
-                ngHomeLogoImageView.setImageDrawable(oppTeamLogo ?: defaultTeamLogo!!)
-                ngAwayLogoImageView.setImageResource(R.drawable.eos_logo)
-                ngAwayTeamNameTextView.text = EOS_TEAM.name
-                ngHomeTeamNameTextView.text = oppTeam.name
-            }
+            ngHomeLogoImageView.setImageDrawable(DataService.setUpTeamLogo(lsTeam.logoPathName.toSnakeCase()))
+            ngAwayLogoImageView.setImageDrawable(DataService.setUpTeamLogo(rsTeam.logoPathName.toSnakeCase()))
+            ngGamePlaceTextView.text = instance.getString(R.string.game_city, lsTeam.city)
+            ngHomeTeamNameTextView.text = lsTeam.name
+            ngAwayTeamNameTextView.text = rsTeam.name
         }
     }
 
@@ -300,10 +284,19 @@ class GamesFragment : Fragment() {
 
                 val elapsedSeconds = diff / secondsInMilli
 
-                if(elapsedDays > 1) {
+                if(elapsedDays > 2) {
                     ngTimeCounterTextView.text = "$elapsedDays days"
-                } else {
-                    ngTimeCounterTextView.text = "$elapsedHours : $elapsedMinutes : $elapsedSeconds"
+                }else if (elapsedDays > 1) {
+                    ngTimeCounterTextView.text = "$elapsedDays day"
+                }
+                else {
+                    val formattedTime = String.format(
+                        "%02d:%02d:%02d",
+                        elapsedHours,
+                        elapsedMinutes,
+                        elapsedSeconds
+                    )
+                    ngTimeCounterTextView.text = formattedTime
                 }
             }
 
@@ -342,6 +335,9 @@ class GamesFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
+
+        var chosenLeague = SBLD_LEAGUE
+
         fun newInstance(param1: String, param2: String) =
             GamesFragment().apply {
                 arguments = Bundle().apply {
@@ -350,4 +346,6 @@ class GamesFragment : Fragment() {
                 }
             }
     }
+
+
 }

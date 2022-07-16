@@ -83,7 +83,7 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                 getString(R.string.sbld) -> Constants.SBLD_LEAGUE
                 getString(R.string.se_herr) -> Constants.SE_HERR_LEAGUE
                 getString(R.string.be_dam) -> Constants.BE_DAM_LEAGUE
-                getString(R.string.all_teams) -> Constants.ALL_LEAGUE
+                getString(R.string.all_teams) -> Constants.ALL_LEAGUES
                 else -> Constants.SBLD_LEAGUE
             }
             playerArray.clear()

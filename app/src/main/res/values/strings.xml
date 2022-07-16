@@ -10,6 +10,7 @@
     <string name="be_dam">BE DAM</string>
     <string name="all_teams">ALL</string>
     <string name="game_place">%1$s, %2$s</string>
+    <string name="game_city">%1$s</string>
     <string name="scores">%1$d : %2$d</string>
     <string name="match_time">%1$s, %2$s</string>
     <string name="home">Home</string>

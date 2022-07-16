@@ -1,8 +1,5 @@
 package se.eoslund.piggest.adapters
 
-import android.graphics.drawable.Drawable
-import android.provider.Settings.Global.getString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -15,15 +12,16 @@ import se.eoslund.piggest.controller.App
 import se.eoslund.piggest.model.Game
 import se.eoslund.piggest.model.TeamRO
 import se.eoslund.piggest.R
+import se.eoslund.piggest.controller.GamesFragment
 import se.eoslund.piggest.services.DataService
-import se.eoslund.piggest.services.DataService.getResource
 import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
+import se.eoslund.piggest.utilites.Constants.ALL_LEAGUES
 import se.eoslund.piggest.utilites.Constants.EOS_TEAM
 import java.util.*
 
-class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)-> Unit ): RecyclerView.Adapter<GameAdapter.GameHolder>() {
+class GameAdapter(private val games:  MutableList<Game>, private val itemClick: (Game)-> Unit ): RecyclerView.Adapter<GameAdapter.GameHolder>() {
 
     inner class GameHolder( itemView: View, val itemClick: (Game) -> Unit): ViewHolder(itemView) {
 
@@ -38,6 +36,7 @@ class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)->
         private val placeTV: TextView = itemView.findViewById(R.id.game_list_item_place)
         private val homeWinnerArrow: ImageView = itemView.findViewById(R.id.left_winner_arrow)
         private val awayWinnerArrow: ImageView = itemView.findViewById(R.id.right_winner_arrow)
+        private val league: TextView = itemView.findViewById(R.id.item_league_name)
 
         fun bindGame(game: Game) {
 
@@ -92,6 +91,14 @@ class GameAdapter(private val games:  MutableList<Game>, val itemClick: (Game)->
                     matchTimeTV.visibility = VISIBLE
                     matchDateTV.visibility = VISIBLE
                 }
+            }
+
+            if (GamesFragment.chosenLeague != ALL_LEAGUES){
+                league.visibility = INVISIBLE
+
+            } else {
+                league.visibility = VISIBLE
+                league.text = game.teamLeague
             }
 
 //            when {
