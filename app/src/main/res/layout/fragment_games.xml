@@ -28,6 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
@@ -89,6 +90,8 @@
                     android:text="@string/all_teams"
                     android:textColor="@drawable/txt_segmented" />
             </RadioGroup>
+
+
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -210,6 +213,7 @@
                     android:paddingTop="0pt"
                     android:paddingBottom="0pt"
                     android:text="@string/next_game"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/game_anons_date"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -347,11 +351,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/next_game_card_view" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_tournament_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/colorSecondary"
+            android:src="@drawable/leaderboard"
+            />
+
         <com.airbnb.lottie.LottieAnimationView
 
             android:id="@+id/games_loading_animation"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="0dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/game_schedule_list"
             app:layout_constraintEnd_toEndOf="parent"
@@ -360,6 +377,7 @@
             app:lottie_autoPlay="true"
             app:lottie_fileName="loader-basketball.json"
             app:lottie_loop="true" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

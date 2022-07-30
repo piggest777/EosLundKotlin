@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -27,6 +28,7 @@ import se.eoslund.piggest.services.DataService
 import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
+import se.eoslund.piggest.utilites.Constants
 import se.eoslund.piggest.utilites.Constants.ALL_LEAGUES
 import se.eoslund.piggest.utilites.Constants.BE_DAM_LEAGUE
 import se.eoslund.piggest.utilites.Constants.GAMES_REF
@@ -34,6 +36,7 @@ import se.eoslund.piggest.utilites.Constants.GAME_DATE_AND_TIME
 import se.eoslund.piggest.utilites.Constants.SBLD_LEAGUE
 import se.eoslund.piggest.utilites.Constants.SE_HERR_LEAGUE
 import se.eoslund.piggest.utilites.Constants.TEAM_LEAGUE
+import se.eoslund.piggest.utilites.Constants.TOURNAMENT_TABLE
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -70,6 +73,7 @@ class GamesFragment : Fragment() {
     lateinit var gamesLoadingAnim: LottieAnimationView
     lateinit var comingSoonText: TextView
     lateinit var comingSoonAnimationView: LottieAnimationView
+    lateinit var fabTournamentTableButton: FloatingActionButton
     var countDownTimer: CountDownTimer? = null
 
     var gameArray  = mutableListOf<Game>()
@@ -79,6 +83,7 @@ class GamesFragment : Fragment() {
     private val gamesReference  = db.collection(GAMES_REF)
 
     var curGame: Game? = null
+    var tounamentTableUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +120,7 @@ class GamesFragment : Fragment() {
         gamesLoadingAnim = view.findViewById(R.id.games_loading_animation)
         comingSoonAnimationView = view.findViewById(R.id.coming_soon_animation)
         comingSoonText = view.findViewById(R.id.coming_soon_text)
+        fabTournamentTableButton = view.findViewById(R.id.fab_tournament_table)
 
 
         radioGroup.setOnCheckedChangeListener { radioGroup, radioButtonID ->
@@ -126,6 +132,8 @@ class GamesFragment : Fragment() {
                 getString(R.string.all_teams) -> ALL_LEAGUES
                 else -> SBLD_LEAGUE
             }
+
+            getTournamentTableLink(chosenLeague)
             countDownTimer?.cancel()
             gameScheduleListener.remove()
             gameArray.clear()
@@ -140,6 +148,17 @@ class GamesFragment : Fragment() {
             }
         })
 
+        fabTournamentTableButton.setOnClickListener {
+            if (tounamentTableUrl != null) {
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, WebStatsFragment.newInstance("$tounamentTableUrl"))
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+
         adapter = GameAdapter(gameArray) { game ->
             Intent(instance, MatchActivity::class.java)
                 .putExtra("game", game)
@@ -148,15 +167,12 @@ class GamesFragment : Fragment() {
         gamesList.adapter = adapter
         gamesList.layoutManager = LinearLayoutManager(instance)
 
+
         gameArray.clear()
         gamesLoadingAnim.visibility = View.VISIBLE
         setupNextGameCard(true)
         setListener()
         return  view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {
@@ -165,9 +181,6 @@ class GamesFragment : Fragment() {
         countDownTimer?.cancel()
     }
 
-    override fun getView(): View? {
-        return super.getView()
-    }
 
     private fun setListener(){
         val leaguePredicate = if (chosenLeague == ALL_LEAGUES) {
@@ -233,10 +246,14 @@ class GamesFragment : Fragment() {
             comingSoonCard.visibility = View.VISIBLE
             ngCard.visibility = View.INVISIBLE
             comingSoonAnimationView.playAnimation()
+            gamesList.scrollToPosition(gameArray.size - 1)
 
         } else {
             comingSoonCard.visibility = View.INVISIBLE
             ngCard.visibility = View.VISIBLE
+
+            val curGameIndex = gameArray.indexOf(curGame)
+            gamesList.smoothScrollToPosition(curGameIndex)
 
             setTimer(curGame!!.gameDateAndTime)
 
@@ -322,6 +339,19 @@ class GamesFragment : Fragment() {
             gamesLoadingAnim.visibility = View.INVISIBLE
             gamesLoadingAnim.pauseAnimation()
         }
+    }
+
+    fun getTournamentTableLink(league: String) {
+        db.collection(TOURNAMENT_TABLE).document(league).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val link = document.getString("url")
+                    if (link != null) {
+                        tounamentTableUrl = link
+                    }
+                }
+            }
+
     }
 
     companion object {

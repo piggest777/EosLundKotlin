@@ -20,6 +20,9 @@ import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
 import se.eoslund.piggest.utilites.Constants
+import se.eoslund.piggest.utilites.Constants.BE_DAM_LEAGUE
+import se.eoslund.piggest.utilites.Constants.SBLD_LEAGUE
+import se.eoslund.piggest.utilites.Constants.SE_HERR_LEAGUE
 import java.util.*
 
 class MatchActivity : AppCompatActivity() {
@@ -47,6 +50,7 @@ class MatchActivity : AppCompatActivity() {
         val homeNameTextView = findViewById<TextView>(R.id.match_home_name)
         val awayNameTextView = findViewById<TextView>(R.id.match_away_name)
         val scoresTextView = findViewById<TextView>(R.id.match_scores_or_time_tv)
+        val matchBG = findViewById<ImageView>(R.id.match_backgroung_iv)
 
         val lsTeam: TeamRO
         val rsTeam: TeamRO
@@ -59,7 +63,6 @@ class MatchActivity : AppCompatActivity() {
             lsTeam = TeamRO.getTeamById(game.lsTeamCode)
         }
 
-        val curDate = Date()
         val lsTeamLogo = DataService.setUpTeamLogo(lsTeam.logoPathName.toSnakeCase())
         val rsTeamLogo = DataService.setUpTeamLogo(rsTeam.logoPathName.toSnakeCase())
 
@@ -80,6 +83,20 @@ class MatchActivity : AppCompatActivity() {
         val adapter = TabsPagerAdapter(supportFragmentManager, lifecycle, numberOfTabs, game)
         tabViewPagerAdapter.adapter = adapter
         tabViewPagerAdapter.isUserInputEnabled = true
+
+        when(game.teamLeague) {
+            SBLD_LEAGUE -> {
+                matchBG.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.sbl_logo_bg))
+            }
+            SE_HERR_LEAGUE -> {
+                matchBG.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.seh_logo_bg))
+            }
+            BE_DAM_LEAGUE -> {
+                matchBG.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.svensk_basket_bg))
+            }
+
+
+        }
 
         TabLayoutMediator(tabLayout, tabViewPagerAdapter) { tab, position ->
             when (position) {

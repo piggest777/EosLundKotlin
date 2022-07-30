@@ -17,7 +17,7 @@ object Constants {
     const val BE_DAM_LEAGUE = "BE Dam"
     const val ALL_LEAGUES = "All"
 
-    const val EOS_CODE = "eosCode"
+
     const val OPPOSITE_TEAM_CODE = "oppositeTeamCode"
     const val IS_HOME_GAME = "isHomeGame"
     const val EOS_SCORES = "eosScores"
@@ -53,6 +53,7 @@ object Constants {
     const val PLAYER_BASE_UPDATE_DATE = "playersBaseUpdateDate"
     const val DATE = "date"
     const val PLAYERS_REF = "players"
+    const val TOURNAMENT_TABLE = "tournamentTablesUrl"
 
 
     val EOS_TEAM: TeamFSO = TeamFSO("Eos Basket","Eos Basket", "Lund", "Eoshallen","eos_logo")
