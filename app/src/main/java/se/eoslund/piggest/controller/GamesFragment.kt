@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
@@ -74,6 +75,7 @@ class GamesFragment : Fragment() {
     lateinit var comingSoonText: TextView
     lateinit var comingSoonAnimationView: LottieAnimationView
     lateinit var fabTournamentTableButton: FloatingActionButton
+    lateinit var ordinaryTournamentTableButton: MaterialButton
     var countDownTimer: CountDownTimer? = null
 
     var gameArray  = mutableListOf<Game>()
@@ -121,6 +123,7 @@ class GamesFragment : Fragment() {
         comingSoonAnimationView = view.findViewById(R.id.coming_soon_animation)
         comingSoonText = view.findViewById(R.id.coming_soon_text)
         fabTournamentTableButton = view.findViewById(R.id.fab_tournament_table)
+        ordinaryTournamentTableButton = view.findViewById(R.id.tournament_btn)
 
 
         radioGroup.setOnCheckedChangeListener { radioGroup, radioButtonID ->
@@ -133,7 +136,7 @@ class GamesFragment : Fragment() {
                 else -> SBLD_LEAGUE
             }
 
-            getTournamentTableLink(chosenLeague)
+
             countDownTimer?.cancel()
             gameScheduleListener.remove()
             gameArray.clear()
@@ -148,15 +151,16 @@ class GamesFragment : Fragment() {
             }
         })
 
-        fabTournamentTableButton.setOnClickListener {
-            if (tounamentTableUrl != null) {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, WebStatsFragment.newInstance("$tounamentTableUrl"))
-                    .addToBackStack(null)
-                    .commit()
-            }
+        ordinaryTournamentTableButton.setOnClickListener {
+            getTournamentTableLink(chosenLeague)
+//            if (tounamentTableUrl != null) {
+//                requireActivity()
+//                    .supportFragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.fragment_container, WebStatsFragment.newInstance("$tounamentTableUrl"))
+//                    .addToBackStack(null)
+//                    .commit()
+//            }
         }
 
         adapter = GameAdapter(gameArray) { game ->
@@ -348,6 +352,12 @@ class GamesFragment : Fragment() {
                     val link = document.getString("url")
                     if (link != null) {
                         tounamentTableUrl = link
+                        requireActivity()
+                            .supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, WebStatsFragment.newInstance("$tounamentTableUrl"))
+                            .addToBackStack(null)
+                            .commit()
                     }
                 }
             }

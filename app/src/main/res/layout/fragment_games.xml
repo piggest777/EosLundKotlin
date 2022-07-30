@@ -186,13 +186,13 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:onClick="nextGameInfo"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/news_toolbar"
-            tools:visibility="visible"
-            android:onClick="nextGameInfo">
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -344,12 +344,11 @@
             android:id="@+id/game_schedule_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
             android:background="@color/white95"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/next_game_card_view" />
+            app:layout_constraintTop_toBottomOf="@+id/tournament_btn" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_tournament_table"
@@ -377,6 +376,24 @@
             app:lottie_autoPlay="true"
             app:lottie_fileName="loader-basketball.json"
             app:lottie_loop="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tournament_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:insetTop="0dp"
+
+            android:insetBottom="0dp"
+            android:minHeight="20dp"
+            android:text="@string/tournament_btn"
+            app:icon="@drawable/leaderboard"
+            app:layout_constraintBottom_toTopOf="@+id/game_schedule_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/next_game_card_view" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
