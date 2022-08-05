@@ -49,6 +49,7 @@ object Constants {
 
     //refs
     const val GAMES_REF = "games"
+    const val TEAMS_REF = "teams"
     const val BASE_UPDATE_DATE = "baseUpdateDate"
     const val PLAYER_BASE_UPDATE_DATE = "playersBaseUpdateDate"
     const val DATE = "date"

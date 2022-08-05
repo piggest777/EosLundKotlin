@@ -8,13 +8,18 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import se.eoslund.piggest.model.Game
 import se.eoslund.piggest.model.TeamFSO
 import se.eoslund.piggest.model.TeamRO
 import se.eoslund.piggest.services.Prefs
+import se.eoslund.piggest.utilites.Constants.GAMES_REF
+import se.eoslund.piggest.utilites.Constants.TEAMS_REF
 import se.eoslund.piggest.utilites.Constants.TEAM_INFO_UPDATE_DATE
 import java.util.*
 
@@ -23,22 +28,21 @@ val prefs: Prefs by lazy {
 }
 
 class App: Application() {
+
+
+
+
     override fun onCreate() {
         super.onCreate()
         instance = this
         prefs = Prefs(instance)
 
+
         Realm.init(instance)
-        val realmName: String = "EosRealmBase"
+        val realmName = "EosRealmBase"
         val realmConfig = RealmConfiguration.Builder().name(realmName).build()
-        val backgroundThreadRealm : Realm = Realm.getInstance(realmConfig)
         Realm.setDefaultConfiguration(realmConfig)
 
-
-        val db = Firebase.firestore
-        val docRef = db.collection("teams")
-         val date = prefs!!.teamUpdateDate
-        Log.d("PREFS", "current date is $date")
 
         FirebaseApp.initializeApp(/*context=*/this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
@@ -46,18 +50,46 @@ class App: Application() {
             DebugAppCheckProviderFactory.getInstance()
         )
 
-        updateTeamChecker(docRef){ success ->
+         val db = Firebase.firestore
+         val teamRef = db.collection(TEAMS_REF)
+        val gamesRef = db.collection(GAMES_REF)
+         val fsSettings = firestoreSettings {
+            isPersistenceEnabled = true
+        }
+        db.firestoreSettings = fsSettings
+
+        updateTeamChecker(teamRef){ success ->
             if(success) {
                 Log.d("UPDATE", "successfully updated team base")
             }
         }
 
+        getCachedGames(GamesFragment.chosenLeague, gamesRef)
     }
+
+
+
 
     companion object {
         lateinit var instance: App
         var prefs: Prefs? = null
 
+
+
+        fun getCachedGames(league: String, ref: CollectionReference) {
+            ref.whereEqualTo("league", league)
+                .get(Source.CACHE)
+                .addOnCompleteListener{
+                    if (it.isSuccessful) {
+                        for (document in it.result!!.documents) {
+                            val game = Game.parseGameFromSnapshot(document)
+                            if (game != null) {
+                                GamesFragment.gameArray.add(game)
+                            }
+                        }
+                    }
+                }
+        }
 
         private fun loadTeamInfoFromFirebase(
             ref: CollectionReference,

@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
@@ -19,6 +21,7 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import se.eoslund.piggest.R
 import se.eoslund.piggest.adapters.GameAdapter
@@ -29,7 +32,6 @@ import se.eoslund.piggest.services.DataService
 import se.eoslund.piggest.services.DataService.toSnakeCase
 import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
-import se.eoslund.piggest.utilites.Constants
 import se.eoslund.piggest.utilites.Constants.ALL_LEAGUES
 import se.eoslund.piggest.utilites.Constants.BE_DAM_LEAGUE
 import se.eoslund.piggest.utilites.Constants.GAMES_REF
@@ -74,14 +76,18 @@ class GamesFragment : Fragment() {
     lateinit var gamesLoadingAnim: LottieAnimationView
     lateinit var comingSoonText: TextView
     lateinit var comingSoonAnimationView: LottieAnimationView
-    lateinit var fabTournamentTableButton: FloatingActionButton
+    lateinit var fabOpenMatchTableButton: FloatingActionButton
     lateinit var ordinaryTournamentTableButton: MaterialButton
     var countDownTimer: CountDownTimer? = null
 
-    var gameArray  = mutableListOf<Game>()
+
 
 
     private val db = Firebase.firestore
+    private val fsSettings = firestoreSettings {
+        isPersistenceEnabled = true
+    }
+
     private val gamesReference  = db.collection(GAMES_REF)
 
     var curGame: Game? = null
@@ -122,7 +128,7 @@ class GamesFragment : Fragment() {
         gamesLoadingAnim = view.findViewById(R.id.games_loading_animation)
         comingSoonAnimationView = view.findViewById(R.id.coming_soon_animation)
         comingSoonText = view.findViewById(R.id.coming_soon_text)
-        fabTournamentTableButton = view.findViewById(R.id.fab_tournament_table)
+        fabOpenMatchTableButton = view.findViewById(R.id.fab_tournament_table)
         ordinaryTournamentTableButton = view.findViewById(R.id.tournament_btn)
 
 
@@ -153,14 +159,14 @@ class GamesFragment : Fragment() {
 
         ordinaryTournamentTableButton.setOnClickListener {
             getTournamentTableLink(chosenLeague)
-//            if (tounamentTableUrl != null) {
-//                requireActivity()
-//                    .supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.fragment_container, WebStatsFragment.newInstance("$tounamentTableUrl"))
-//                    .addToBackStack(null)
-//                    .commit()
-//            }
+        }
+
+        fabOpenMatchTableButton.setOnClickListener {
+            if (gamesList.isNotEmpty()) {
+                Intent(activity, MatchListActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
         }
 
         adapter = GameAdapter(gameArray) { game ->
@@ -170,11 +176,13 @@ class GamesFragment : Fragment() {
         }
         gamesList.adapter = adapter
         gamesList.layoutManager = LinearLayoutManager(instance)
-
-
-        gameArray.clear()
-        gamesLoadingAnim.visibility = View.VISIBLE
-        setupNextGameCard(true)
+        db.firestoreSettings = fsSettings
+        if (gameArray.isEmpty()) {
+            setupNextGameCard(true)
+        }
+//        getCachedGames(chosenLeague)
+//        gamesLoadingAnim.visibility = View.VISIBLE
+//        setupNextGameCard(true)
         setListener()
         return  view
     }
@@ -184,6 +192,42 @@ class GamesFragment : Fragment() {
         gameScheduleListener.remove()
         countDownTimer?.cancel()
     }
+
+    override fun onPause() {
+        super.onPause()
+        countDownTimer?.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        countDownTimer?.start()
+    }
+
+
+//    private fun getCachedGames(league: String) {
+//        setupNextGameCard(true)
+//        db.disableNetwork()
+//        gamesReference.whereEqualTo("league", league)
+//            .get(Source.CACHE)
+//            .addOnCompleteListener{
+//                if (it.isSuccessful) {
+//                    for (document in it.result!!.documents) {
+//                        val game = Game.parseGameFromSnapshot(document)
+//                        if (game != null) {
+//                            gameArray.add(game)
+//                        }
+//                    }
+//                    adapter.notifyDataSetChanged()
+//                    db.enableNetwork()
+//                    gameArray.clear()
+//                    setListener()
+//                }
+//                else {
+//                    db.enableNetwork()
+//                    setListener()
+//                }
+//            }
+//    }
 
 
     private fun setListener(){
@@ -330,6 +374,7 @@ class GamesFragment : Fragment() {
 
     private fun setupNextGameCard(isLoading: Boolean) {
         if (isLoading) {
+            gamesLoadingAnim.visibility = View.VISIBLE
             comingSoonCard.visibility = View.VISIBLE
             ngCard.visibility = View.INVISIBLE
             comingSoonText.text = "LOADING..."
@@ -377,6 +422,7 @@ class GamesFragment : Fragment() {
         @JvmStatic
 
         var chosenLeague = SBLD_LEAGUE
+        var gameArray  = mutableListOf<Game>()
 
         fun newInstance(param1: String, param2: String) =
             GamesFragment().apply {
