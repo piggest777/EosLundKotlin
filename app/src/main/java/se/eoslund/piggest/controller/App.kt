@@ -1,7 +1,16 @@
 package se.eoslund.piggest.controller
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.ContentValues.TAG
+import android.os.Build
+import android.provider.Settings.System.getString
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.Timestamp
 import com.google.firebase.appcheck.FirebaseAppCheck
@@ -12,8 +21,10 @@ import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import se.eoslund.piggest.R
 import se.eoslund.piggest.model.Game
 import se.eoslund.piggest.model.TeamFSO
 import se.eoslund.piggest.model.TeamRO
@@ -58,13 +69,20 @@ class App: Application() {
         }
         db.firestoreSettings = fsSettings
 
+        createNotificationChannel()
+
         updateTeamChecker(teamRef){ success ->
             if(success) {
                 Log.d("UPDATE", "successfully updated team base")
+                appReadyToUse = true
             }
         }
 
         getCachedGames(GamesFragment.chosenLeague, gamesRef)
+        getRegistrationToken()
+        if (!checkGooglePlayServices()) {
+            Log.w("GOOGLE_PLAY", "Device doesn't have google play services")
+        }
     }
 
 
@@ -73,6 +91,7 @@ class App: Application() {
     companion object {
         lateinit var instance: App
         var prefs: Prefs? = null
+        var appReadyToUse = false
 
 
 
@@ -126,15 +145,18 @@ class App: Application() {
                                              }
                                 } else{
                                     Log.d("UPDATE", "no update needed")
+                                    appReadyToUse = true
                                 }
                             }
 
                         } else {
                             Log.d("FIREBASE", "No such document")
+                            appReadyToUse = true
                         }
                     }
                     .addOnFailureListener { exception ->
                         Log.d("FIREBASE", "get failed with ", exception)
+                        appReadyToUse  = true
                     }
             } else {
                 Log.d("UPDATE", "Updating team base")
@@ -165,6 +187,48 @@ class App: Application() {
             Log.d("PREFS", "current date is ${prefs!!.teamUpdateDate}")
         }
 
+        private fun getRegistrationToken() {
+             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
 
+                // Get new FCM registration token
+                val token = task.result
+
+                // Log and toast
+                val msg = instance.getString(R.string.msg_token_fmt, token)
+                Log.d("TOKEN", msg)
+            })
+        }
+
+        private fun checkGooglePlayServices(): Boolean {
+            // 1
+            val status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(instance)
+            // 2
+            return if (status != ConnectionResult.SUCCESS) {
+                Log.e(TAG, "Error")
+                // ask user to update google play services and manage the error.
+                false
+            } else {
+                // 3
+                Log.i("GOOGLE_PLAY", "Google play services updated")
+                true
+            }
+        }
+
+        private fun createNotificationChannel() {
+            // Create the NotificationChannel
+            val name = instance.getString(R.string.default_channel_name)
+            val descriptionText = instance.getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val mChannel = NotificationChannel(instance.getString(R.string.default_notification_channel_id), name, importance)
+            mChannel.description = descriptionText
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            val notificationManager = instance.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
     }
 }

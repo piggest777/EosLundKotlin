@@ -1,6 +1,9 @@
 package se.eoslund.piggest.controller
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -12,6 +15,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
@@ -34,6 +38,7 @@ import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
 import se.eoslund.piggest.utilites.Constants.ALL_LEAGUES
 import se.eoslund.piggest.utilites.Constants.BE_DAM_LEAGUE
+import se.eoslund.piggest.utilites.Constants.BROADCAST_UPDATE_GAMES_TABLE
 import se.eoslund.piggest.utilites.Constants.GAMES_REF
 import se.eoslund.piggest.utilites.Constants.GAME_DATE_AND_TIME
 import se.eoslund.piggest.utilites.Constants.SBLD_LEAGUE
@@ -59,6 +64,7 @@ class GamesFragment : Fragment() {
     lateinit var radioGroup: RadioGroup
 
     lateinit var gameScheduleListener: ListenerRegistration
+    lateinit var teamsUpdateReceiver: BroadcastReceiver
     lateinit var gamesList: RecyclerView
     lateinit var adapter: GameAdapter
 
@@ -99,7 +105,14 @@ class GamesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
+
+    private fun updateGamesTable() {
+        adapter.notifyDataSetChanged()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,6 +126,20 @@ class GamesFragment : Fragment() {
         radioGroup = view.findViewById(R.id.radioGroup)
         val sbldRadioButton: RadioButton = view.findViewById(R.id.news_radio_button)
         sbldRadioButton.isChecked = true
+
+        teamsUpdateReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                Log.d("teamsUpdateReceiver", "onReceive")
+                updateGamesTable()
+            }
+        }
+
+        LocalBroadcastManager.getInstance(instance).registerReceiver(
+            teamsUpdateReceiver,
+            IntentFilter(BROADCAST_UPDATE_GAMES_TABLE)
+        )
+
+
 
         //bing UI element
         ngGamePlaceTextView = view.findViewById(R.id.games_anons_place_tv)
@@ -145,7 +172,6 @@ class GamesFragment : Fragment() {
 
             countDownTimer?.cancel()
             gameScheduleListener.remove()
-            gameArray.clear()
             setListener()
         }
 
@@ -184,12 +210,15 @@ class GamesFragment : Fragment() {
 //        gamesLoadingAnim.visibility = View.VISIBLE
 //        setupNextGameCard(true)
         setListener()
+
+
         return  view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         gameScheduleListener.remove()
+        LocalBroadcastManager.getInstance(instance).unregisterReceiver(teamsUpdateReceiver)
         countDownTimer?.cancel()
     }
 
@@ -197,6 +226,7 @@ class GamesFragment : Fragment() {
         super.onPause()
         countDownTimer?.cancel()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -231,6 +261,7 @@ class GamesFragment : Fragment() {
 
 
     private fun setListener(){
+        gameArray.clear()
         val leaguePredicate = if (chosenLeague == ALL_LEAGUES) {
             mutableListOf(SBLD_LEAGUE, SE_HERR_LEAGUE, BE_DAM_LEAGUE)
         } else {
@@ -303,6 +334,8 @@ class GamesFragment : Fragment() {
             val curGameIndex = gameArray.indexOf(curGame)
             gamesList.smoothScrollToPosition(curGameIndex)
 
+
+            countDownTimer?.cancel()
             setTimer(curGame!!.gameDateAndTime)
 
             ngDateTextView.text = DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.DATE)

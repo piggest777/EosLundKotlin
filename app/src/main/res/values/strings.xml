@@ -118,4 +118,8 @@
     <string name="next_game">NEXT GAME</string>
     <string name="coming_soon">COMING \n SOON</string>
     <string name="tournament_btn">tournament table</string>
+    <string name="default_notification_channel_id">DEFAULT_NOTIF_CHANNEL</string>
+    <string name="msg_token_fmt">Current token is: %1$s</string>
+    <string name="default_channel_name">Default notifications channel</string>
+    <string name="channel_description">Common notifications about matches and etc.</string>
 </resources>

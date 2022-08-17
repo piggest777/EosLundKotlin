@@ -59,6 +59,9 @@ object Constants {
 
     val EOS_TEAM: TeamFSO = TeamFSO("Eos Basket","Eos Basket", "Lund", "Eoshallen","eos_logo")
 
+    //Broadcast
+    const val BROADCAST_UPDATE_GAMES_TABLE = "updateGameTableInfo"
+
 
     //youtube API
     const val YT_API_KEY = "AIzaSyBxQ4uUEYTfTBp72F4EJzYueGLZa3v7Kmc"
