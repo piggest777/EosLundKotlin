@@ -215,6 +215,32 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <View
+                android:id="@+id/canceled_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#BFFFFFFF"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/canceled_view_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_extrabold"
+                android:rotation="10"
+                android:text="@string/cancelled"
+                android:textColor="@color/colorPrimary"
+                android:textSize="36sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/canceled_view"
+                app:layout_constraintEnd_toEndOf="@+id/canceled_view"
+                app:layout_constraintStart_toStartOf="@+id/canceled_view"
+                app:layout_constraintTop_toTopOf="@+id/canceled_view" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

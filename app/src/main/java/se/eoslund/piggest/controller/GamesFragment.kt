@@ -7,13 +7,13 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -76,6 +76,7 @@ class GamesFragment : Fragment() {
     lateinit var ngAwayTeamNameTextView: TextView
     lateinit var ngDateTextView: TextView
     lateinit var ngTimeTextView: TextView
+    lateinit var ngTextView: TextView
     lateinit var ngTimeCounterTextView: TextView
     lateinit var comingSoonCard: CardView
     lateinit var ngCard: CardView
@@ -105,6 +106,8 @@ class GamesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
 
 
     }
@@ -147,6 +150,7 @@ class GamesFragment : Fragment() {
         ngAwayLogoImageView = view.findViewById(R.id.game_anons_guest_logo_iv)
         ngHomeTeamNameTextView = view.findViewById(R.id.game_anons_home_team_name_tv)
         ngAwayTeamNameTextView = view.findViewById(R.id.game_anons_away_team_name_tv)
+        ngTextView = view.findViewById(R.id.game_anons_next_game)
         ngDateTextView = view.findViewById(R.id.game_anons_date)
         ngTimeTextView = view.findViewById(R.id.game_anons_time)
         ngTimeCounterTextView = view.findViewById(R.id.game_anons_counter)
@@ -157,6 +161,8 @@ class GamesFragment : Fragment() {
         comingSoonText = view.findViewById(R.id.coming_soon_text)
         fabOpenMatchTableButton = view.findViewById(R.id.fab_tournament_table)
         ordinaryTournamentTableButton = view.findViewById(R.id.tournament_btn)
+
+        setUpCardSize()
 
 
         radioGroup.setOnCheckedChangeListener { radioGroup, radioButtonID ->
@@ -260,6 +266,17 @@ class GamesFragment : Fragment() {
 //    }
 
 
+    private fun setUpCardSize() {
+        val height = resources.displayMetrics.heightPixels
+        if (height < 1800) {
+            instance.resources.getDimension(R.dimen.small_screen_dimen_for_card).toInt().let {
+                ngCard.layoutParams.height = it
+                ngTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.small_screen_next_game_text))
+                ngTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.small_screen_match_time_text))
+            }
+        }
+    }
+
     private fun setListener(){
         gameArray.clear()
         val leaguePredicate = if (chosenLeague == ALL_LEAGUES) {
@@ -279,12 +296,19 @@ class GamesFragment : Fragment() {
                 for (dc in snapshots!!.documentChanges) {
                     val game = Game.parseGameFromSnapshot(dc.document)
                     game?.let {
-                        when (dc.type) {
-                            DocumentChange.Type.ADDED -> onDocumentAdded(dc, it)
-                            DocumentChange.Type.MODIFIED -> onDocumentModified(dc, it)
-                            DocumentChange.Type.REMOVED -> onDocumentRemoved(dc)
+                        try {
+                            when (dc.type) {
+                                DocumentChange.Type.ADDED -> onDocumentAdded(dc, it)
+                                DocumentChange.Type.MODIFIED -> onDocumentModified(dc, it)
+                                DocumentChange.Type.REMOVED -> onDocumentRemoved(dc)
+                            }
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.e("FB_ERROR", "onEvent:error", e)
+                            gameScheduleListener.remove()
+                            setListener()
                         }
                     }
+
                     }
                 nextGameInfo()
         }

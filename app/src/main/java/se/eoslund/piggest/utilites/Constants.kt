@@ -29,6 +29,7 @@ object Constants {
     const val GAME_DESCRIPTION = "gameDescription"
     const val STATISTIC_LINK = "statsLink"
     const val GAME_COVER_URL = "gameCoverUrl"
+    const val IS_CANCELLED = "isCancelled"
 
     const val PLAYER_NAME = "playerName"
     const val PLAYER_NUMBER = "playerNumber"

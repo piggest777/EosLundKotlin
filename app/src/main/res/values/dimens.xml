@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="small_screen_dimen_for_card">150dp</dimen>
+    <dimen name="small_screen_match_time_text">24sp</dimen>
+    <dimen name="small_screen_next_game_text">18sp</dimen>
 </resources>

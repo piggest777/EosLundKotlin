@@ -9,6 +9,7 @@ import se.eoslund.piggest.utilites.Constants.EOS_SCORES
 import se.eoslund.piggest.utilites.Constants.GAME_COVER_URL
 import se.eoslund.piggest.utilites.Constants.GAME_DATE_AND_TIME
 import se.eoslund.piggest.utilites.Constants.GAME_DESCRIPTION
+import se.eoslund.piggest.utilites.Constants.IS_CANCELLED
 import se.eoslund.piggest.utilites.Constants.IS_HOME_GAME
 import se.eoslund.piggest.utilites.Constants.OPPOSITE_TEAM_CODE
 import se.eoslund.piggest.utilites.Constants.OPPOSITE_TEAM_PLAYERS
@@ -31,7 +32,8 @@ public class Game(
     val oppTeamPlayer: String?,
     val statsLink: String?,
     val gameDescription: String?,
-    val gameCoverURL: String?
+    val gameCoverURL: String?,
+    val isCancelled: Boolean
 ) : Serializable {
     companion object {
 
@@ -42,6 +44,7 @@ public class Game(
             val eosScore = data[EOS_SCORES] as? Long ?: 0
             val oppositeTeamScore = data[OPPOSITE_TEAM_SCORES] as? Long ?: 0
             val isHomeGame = data[IS_HOME_GAME] as? Boolean
+            val isCancelled = data[IS_CANCELLED] as? Boolean ?: false
             val gameDate = data[GAME_DATE_AND_TIME] as? Timestamp
             val teamLeague = data[TEAM_LEAGUE] as? String
             val eosPlayers: String? = data[EOS_PLAYERS] as? String
@@ -49,6 +52,7 @@ public class Game(
             val statsLink = data[STATISTIC_LINK] as? String
             val gameDesc = data[GAME_DESCRIPTION] as? String
             val gameCoverURL = data[GAME_COVER_URL] as? String
+
 
             val javaDate: Date? = gameDate?.toDate()
 
@@ -69,7 +73,7 @@ public class Game(
                     lsScores = oppositeTeamScore
                 }
 
-                return Game(lsTeamCode,rsTeamCode,lsScores,rsScores, isHomeGame, javaDate,teamLeague, id, eosPlayers,oppTeamPlayers,statsLink,gameDesc,gameCoverURL)
+                return Game(lsTeamCode,rsTeamCode,lsScores,rsScores, isHomeGame, javaDate,teamLeague, id, eosPlayers,oppTeamPlayers,statsLink,gameDesc,gameCoverURL, isCancelled)
 
             } else {
                 return null

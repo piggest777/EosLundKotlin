@@ -37,6 +37,8 @@ class GameAdapter(private val games:  MutableList<Game>, private val itemClick: 
         private val homeWinnerArrow: ImageView = itemView.findViewById(R.id.left_winner_arrow)
         private val awayWinnerArrow: ImageView = itemView.findViewById(R.id.right_winner_arrow)
         private val league: TextView = itemView.findViewById(R.id.item_league_name)
+        private val cancelledView : View = itemView.findViewById(R.id.canceled_view)
+        private val canceledText : TextView = itemView.findViewById(R.id.canceled_view_text)
 
         fun bindGame(game: Game) {
 
@@ -100,6 +102,16 @@ class GameAdapter(private val games:  MutableList<Game>, private val itemClick: 
                 league.visibility = VISIBLE
                 league.text = game.teamLeague
             }
+
+            if (game.isCancelled) {
+                cancelledView.visibility = VISIBLE
+                canceledText.visibility = VISIBLE
+            } else {
+                cancelledView.visibility = INVISIBLE
+                canceledText.visibility = INVISIBLE
+            }
+
+
 
 //            when {
 //                leftSideScores > rightSideScores -> {
