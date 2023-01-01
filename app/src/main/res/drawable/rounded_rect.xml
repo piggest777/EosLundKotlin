@@ -3,9 +3,9 @@
 
     <solid android:color="@color/colorPrimary" />
 
-    <stroke
-        android:width="2dp"
-        android:color="#BABABA" />
+<!--    <stroke-->
+<!--        android:width="2dp"-->
+<!--        android:color="#BABABA" />-->
 
     <padding
         android:bottom="5dp"

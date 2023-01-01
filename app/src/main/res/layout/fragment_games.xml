@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#16000000">
+        android:background="#F5FAF4">
 
         <!-- TODO: Update blank fragment layout -->
 
@@ -92,7 +92,6 @@
             </RadioGroup>
 
 
-
         </androidx.appcompat.widget.Toolbar>
 
         <!--        <ImageView-->
@@ -110,12 +109,12 @@
             android:id="@+id/comming_soon_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/card_gradient"
+            app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/next_game_card_view"
             app:layout_constraintEnd_toEndOf="@+id/next_game_card_view"
             app:layout_constraintStart_toStartOf="@+id/next_game_card_view"
-            app:layout_constraintTop_toTopOf="@+id/next_game_card_view"
-            app:cardCornerRadius="20dp"
-            android:background="@drawable/card_gradient">
+            app:layout_constraintTop_toTopOf="@+id/next_game_card_view">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -146,7 +145,6 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/rounded_rect"
                     android:backgroundTint="@color/colorSecondary"
-                    android:textColor="@color/white95"
                     android:firstBaselineToTopHeight="0dp"
                     android:fontFamily="@font/nunito_bold"
                     android:gravity="center"
@@ -154,6 +152,7 @@
                     android:paddingTop="0pt"
                     android:paddingBottom="0pt"
                     android:text="@string/next_game"
+                    android:textColor="@color/white95"
                     android:textSize="20sp"
 
                     app:layout_constraintEnd_toEndOf="parent"
@@ -189,6 +188,8 @@
             android:layout_marginEnd="10dp"
             android:onClick="nextGameInfo"
             android:visibility="invisible"
+            android:elevation="8dp"
+            app:cardElevation="10dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -360,13 +361,12 @@
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/colorSecondary"
             android:foregroundGravity="center"
             android:src="@drawable/expand"
             android:tint="@android:color/white"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <com.airbnb.lottie.LottieAnimationView
 
@@ -405,9 +405,9 @@
             android:id="@+id/separator"
             android:layout_width="match_parent"
             android:layout_height="3dp"
+            android:background="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/game_schedule_list"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/colorPrimary"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

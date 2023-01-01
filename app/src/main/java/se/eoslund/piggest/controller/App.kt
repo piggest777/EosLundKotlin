@@ -15,7 +15,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.Timestamp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
@@ -39,9 +38,6 @@ val prefs: Prefs by lazy {
 }
 
 class App: Application() {
-
-
-
 
     override fun onCreate() {
         super.onCreate()
@@ -85,15 +81,10 @@ class App: Application() {
         }
     }
 
-
-
-
     companion object {
         lateinit var instance: App
         var prefs: Prefs? = null
         var appReadyToUse = false
-
-
 
         fun getCachedGames(league: String, ref: CollectionReference) {
             ref.whereEqualTo("league", league)

@@ -100,7 +100,7 @@ open class PlayerRO(
         fun deletePlayerById(id: String) {
             val realm = Realm.getDefaultInstance()
 
-            realm.executeTransaction { r: Realm ->
+            realm.executeTransactionAsync { r: Realm ->
                 r.where(PlayerRO::class.java)
                     .equalTo("id", id)
                     .findFirst()?.deleteFromRealm()
@@ -114,25 +114,5 @@ open class PlayerRO(
                 .equalTo("id", id)
                 .findFirst() ?: PlayerRO()
         }
-
-
-//        private fun mapPlayer(playerRO: PlayerRO) : PlayerFSO{
-//            val pImage = DataService.byteArrayToImage(playerRO.image)
-//            return PlayerFSO (
-//                playerRO.name,
-//                playerRO.number,
-//                playerRO.dayOfBirth,
-//                playerRO.height,
-//                playerRO.position,
-//                playerRO.id,
-//                playerRO.imageUrl,
-//                playerRO.league,
-//                playerRO.updateDate,
-//                playerRO.nationality,
-//                playerRO.originalClub,
-//                playerRO.inEosFrom,
-//                playerRO.bigImage
-//            )
-//        }
     }
 }

@@ -6,15 +6,27 @@
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/activity_youtube_player.xml" value="0.6734375" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/fragment_games.xml" value="0.6145510835913313" />
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/news_list_item.xml" value="0.4685185185185185" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.224" />
         <entry key="app/src/main/res/drawable/bg_gradient.xml" value="0.375" />
         <entry key="app/src/main/res/drawable/expand.xml" value="0.521" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.224" />
+        <entry key="app/src/main/res/drawable/image_rounded.xml" value="0.2495" />
         <entry key="app/src/main/res/drawable/rounded_rect.xml" value="0.2995" />
         <entry key="app/src/main/res/drawable/splash_background.xml" value="0.521" />
+        <entry key="app/src/main/res/drawable/splash_inset.xml" value="0.1" />
         <entry key="app/src/main/res/layout-v26/game_schedule_list_item.xml" value="0.5265625" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/activity_match.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/activity_match_list.xml" value="0.5265625" />
-        <entry key="app/src/main/res/layout/fragment_games.xml" value="0.5575181159420289" />
+        <entry key="app/src/main/res/layout/activity_player.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/activity_youtube_player.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/fragment_demo.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/fragment_games.xml" value="0.4373831775700935" />
+        <entry key="app/src/main/res/layout/fragment_news.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/fragment_team.xml" value="0.2453125" />
+        <entry key="app/src/main/res/layout/fragment_web_stats.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/game_schedule_list_item.xml" value="0.5265625" />
+        <entry key="app/src/main/res/layout/news_list_item.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/team_player_item.xml" value="0.35892514395393477" />
       </map>
     </option>

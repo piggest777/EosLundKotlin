@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.view.isEmpty
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,9 +34,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 enum class BaseStatus {
     NOT_EXIST,
     NEED_TO_BE_UPDATED,
@@ -45,23 +43,17 @@ enum class BaseStatus {
 
 class TeamFragment : Fragment(), CoroutineScope by MainScope() {
 
-    private var param1: String? = null
-    private var param2: String? = null
+
 
     private lateinit var playerList: RecyclerView
     private lateinit var adapter: TeamAdapter
     private lateinit var progressView: ProgressView
     private lateinit var loadingAnim: LottieAnimationView
     private var playerArray = mutableListOf<PlayerRO>()
-    private var fsPlayerArray = mutableListOf<Player>()
     private lateinit var segmentControl: RadioGroup
     private var chosenLeague = "SBLD"
 
     private val db = Firebase.firestore
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,22 +104,20 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                 BaseStatus.NOT_EXIST -> {
                     getPlayerListFromFS { success, fsPlayerList ->
                         if (success) {
-
                                 updateRealmBase(fsPlayerList, null)
-
                         }
                     }
                 }
                 BaseStatus.NEED_TO_BE_UPDATED -> {
                     getPlayerListFromFS { success, fsPlayerList ->
                         if (success) {
-                            var listToUpdate = mutableListOf<String>()
-                            var listToDelete = mutableListOf<String>()
+                            val listToUpdate = mutableListOf<String>()
+                            val listToDelete = mutableListOf<String>()
 
                             val realmPlayers = PlayerRO.getAllPlayerFromBase()
 
                             val fsIDs = firPlayersIdsAndDate(fsPlayerList)
-                            var realmIds = realmPlayersIDsAndDate(realmPlayers)
+                            val realmIds = realmPlayersIDsAndDate(realmPlayers)
 
                             fsIDs.forEach { (firId, firUpdateDate) ->
                                 if (realmIds[firId] != null) {
@@ -143,12 +133,12 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                             }
                             listToDelete.addAll(ArrayList(realmIds.keys))
 
-                            if (listToUpdate.isNotEmpty() && listToDelete.isNotEmpty()) {
+                            if (listToUpdate.isNotEmpty() || listToDelete.isNotEmpty()) {
                                 val playersToUpdate = fsPlayerList.filter {
                                     listToUpdate.contains(it.id)
                                 }
 
-                                lifecycleScope.launch() {
+                                lifecycleScope.launch {
                                     updateRealmBase(playersToUpdate, listToDelete)
                                 }
                             } else {
@@ -182,7 +172,10 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                             val prefsDate = Date(prefs.playersUpdateDate)
                             if (timeStampToDate > prefsDate) {
                                 completionHandler(BaseStatus.NEED_TO_BE_UPDATED)
-                            } else (completionHandler(BaseStatus.READY_TO_USE))
+                            }
+                            else {
+                                completionHandler(BaseStatus.READY_TO_USE)
+                            }
                         } else completionHandler(BaseStatus.ERROR)
 
                     } else {
@@ -222,7 +215,9 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
         progressView.progressFromPrevious = false
         progressView.min = 5f
 
-        loadingAnim.visibility = View.VISIBLE
+        if ( playerList.isEmpty() ){
+            loadingAnim.visibility = View.VISIBLE
+        }
 
         players.forEach { player ->
             if (player.imageUrl == null) {
@@ -257,28 +252,6 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                     }
                 }
             }
-
-//        lifecycleScope.launch {
-//            val job = players.map { player ->
-//                async(Dispatchers.IO) {
-//
-//                    if (player.imageUrl == null) {
-//                        playersRealm.add(mapPlayerFSOtoRO(player, null))
-//                    } else {
-//                        PlayerFSO.getPlayerImage(player.imageUrl!!) { success, byteArray ->
-//                            if (success) {
-//                                playersRealm.add(mapPlayerFSOtoRO(player, byteArray))
-//                            } else {
-//                                playersRealm.add(mapPlayerFSOtoRO(player, null))
-//                            }
-//                        }
-//                    }
-//                }
-//            }.awaitAll()
-//            whenStarted {
-//                job
-//            }
-
     }
 
     private fun firPlayersIdsAndDate(fsPlayers: List<Player>): HashMap<String, Date> {
@@ -321,29 +294,11 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
         )
     }
 
-    fun incrementProgress(calls: Int, count:Int) {
+    private fun incrementProgress(calls: Int, count:Int) {
         val progressPercent:  Int = ((calls.toFloat()/count.toFloat()) * 100).toInt()
         progressView.progress = progressPercent.toFloat()
         progressView.labelText = App.instance.getString(R.string.progress_view_update_percent, "$progressPercent %")
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GamesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GamesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+    companion object
 }

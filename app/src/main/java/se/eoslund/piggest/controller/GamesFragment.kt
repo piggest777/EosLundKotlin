@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
@@ -88,17 +89,15 @@ class GamesFragment : Fragment() {
     var countDownTimer: CountDownTimer? = null
 
 
-
-
     private val db = Firebase.firestore
     private val fsSettings = firestoreSettings {
         isPersistenceEnabled = true
     }
 
-    private val gamesReference  = db.collection(GAMES_REF)
+    private val gamesReference = db.collection(GAMES_REF)
 
     var curGame: Game? = null
-    var tounamentTableUrl: String? = null
+    var tournamentTableUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,14 +105,12 @@ class GamesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
-
-
     }
 
-    private fun updateGamesTable() {
-        adapter.notifyDataSetChanged()
+    private fun updateGameView() {
+        gameScheduleListener.remove()
+        setListener()
+        nextGameInfo()
     }
 
 
@@ -133,7 +130,7 @@ class GamesFragment : Fragment() {
         teamsUpdateReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 Log.d("teamsUpdateReceiver", "onReceive")
-                updateGamesTable()
+                updateGameView()
             }
         }
 
@@ -141,7 +138,6 @@ class GamesFragment : Fragment() {
             teamsUpdateReceiver,
             IntentFilter(BROADCAST_UPDATE_GAMES_TABLE)
         )
-
 
 
         //bing UI element
@@ -212,13 +208,10 @@ class GamesFragment : Fragment() {
         if (gameArray.isEmpty()) {
             setupNextGameCard(true)
         }
-//        getCachedGames(chosenLeague)
-//        gamesLoadingAnim.visibility = View.VISIBLE
-//        setupNextGameCard(true)
         setListener()
 
 
-        return  view
+        return view
     }
 
     override fun onDestroyView() {
@@ -239,45 +232,24 @@ class GamesFragment : Fragment() {
         countDownTimer?.start()
     }
 
-
-//    private fun getCachedGames(league: String) {
-//        setupNextGameCard(true)
-//        db.disableNetwork()
-//        gamesReference.whereEqualTo("league", league)
-//            .get(Source.CACHE)
-//            .addOnCompleteListener{
-//                if (it.isSuccessful) {
-//                    for (document in it.result!!.documents) {
-//                        val game = Game.parseGameFromSnapshot(document)
-//                        if (game != null) {
-//                            gameArray.add(game)
-//                        }
-//                    }
-//                    adapter.notifyDataSetChanged()
-//                    db.enableNetwork()
-//                    gameArray.clear()
-//                    setListener()
-//                }
-//                else {
-//                    db.enableNetwork()
-//                    setListener()
-//                }
-//            }
-//    }
-
-
     private fun setUpCardSize() {
         val height = resources.displayMetrics.heightPixels
         if (height < 1800) {
             instance.resources.getDimension(R.dimen.small_screen_dimen_for_card).toInt().let {
                 ngCard.layoutParams.height = it
-                ngTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.small_screen_next_game_text))
-                ngTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.small_screen_match_time_text))
+                ngTextView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.small_screen_next_game_text)
+                )
+                ngTimeTextView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.small_screen_match_time_text)
+                )
             }
         }
     }
 
-    private fun setListener(){
+    private fun setListener() {
         gameArray.clear()
         val leaguePredicate = if (chosenLeague == ALL_LEAGUES) {
             mutableListOf(SBLD_LEAGUE, SE_HERR_LEAGUE, BE_DAM_LEAGUE)
@@ -287,12 +259,11 @@ class GamesFragment : Fragment() {
         gameScheduleListener = gamesReference
             .whereIn(TEAM_LEAGUE, leaguePredicate)
             .orderBy(GAME_DATE_AND_TIME, Query.Direction.ASCENDING)
-            .addSnapshotListener{ snapshots, e ->
-            if (e != null) {
-                Log.w("FB_ERROR", "listen:error", e)
-                return@addSnapshotListener
-            }
-
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("FB_ERROR", "listen:error", e)
+                    return@addSnapshotListener
+                }
                 for (dc in snapshots!!.documentChanges) {
                     val game = Game.parseGameFromSnapshot(dc.document)
                     game?.let {
@@ -308,30 +279,29 @@ class GamesFragment : Fragment() {
                             setListener()
                         }
                     }
-
-                    }
+                }
                 nextGameInfo()
-        }
+            }
 
     }
 
 
     private fun onDocumentAdded(change: DocumentChange, game: Game) {
-            gameArray.add(change.newIndex, game)
-            adapter.notifyItemInserted(change.newIndex)
-        }
+        gameArray.add(change.newIndex, game)
+        adapter.notifyItemInserted(change.newIndex)
+    }
 
     private fun onDocumentModified(change: DocumentChange, game: Game) {
-            if (change.oldIndex == change.newIndex) {
-                // Item changed but remained in same position
-                gameArray[change.oldIndex] = game
-                adapter.notifyItemChanged(change.oldIndex)
-            } else {
-                // Item changed and changed position
-                gameArray.removeAt(change.oldIndex)
-                gameArray.add(change.newIndex, game)
-                adapter.notifyItemMoved(change.oldIndex, change.newIndex)
-            }
+        if (change.oldIndex == change.newIndex) {
+            // Item changed but remained in same position
+            gameArray[change.oldIndex] = game
+            adapter.notifyItemChanged(change.oldIndex)
+        } else {
+            // Item changed and changed position
+            gameArray.removeAt(change.oldIndex)
+            gameArray.add(change.newIndex, game)
+            adapter.notifyItemMoved(change.oldIndex, change.newIndex)
+        }
     }
 
     private fun onDocumentRemoved(change: DocumentChange) {
@@ -355,15 +325,15 @@ class GamesFragment : Fragment() {
             comingSoonCard.visibility = View.INVISIBLE
             ngCard.visibility = View.VISIBLE
 
-            val curGameIndex = gameArray.indexOf(curGame)
-            gamesList.smoothScrollToPosition(curGameIndex)
-
+            scrollToPosition()
 
             countDownTimer?.cancel()
             setTimer(curGame!!.gameDateAndTime)
 
-            ngDateTextView.text = DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.DATE)
-            ngTimeTextView.text = DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.TIME)
+            ngDateTextView.text =
+                DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.DATE)
+            ngTimeTextView.text =
+                DateFormatter.getFormattedDate(curGame!!.gameDateAndTime, DateFormat.TIME)
 
             val rsTeam = TeamRO.getTeamById(curGame!!.rsTeamCode)
             val lsTeam = TeamRO.getTeamById(curGame!!.lsTeamCode)
@@ -376,6 +346,17 @@ class GamesFragment : Fragment() {
         }
     }
 
+    private fun scrollToPosition() {
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                curGame?.let {
+                    val curGameIndex = gameArray.indexOf(it)
+                    gamesList.smoothScrollToPosition(curGameIndex)
+                }
+            }
+        }, 100)
+    }
+
     private fun getNextGame(): Game? {
         val currentTime = Date()
         return gameArray.asSequence()
@@ -383,11 +364,11 @@ class GamesFragment : Fragment() {
             .firstOrNull()
     }
 
-    private fun setTimer (gameDate: Date) {
+    private fun setTimer(gameDate: Date) {
         val currentTime = Date().time
-        val difference   =  gameDate.time - currentTime
+        val difference = gameDate.time - currentTime
 
-        countDownTimer  = object : CountDownTimer(difference, 1000){
+        countDownTimer = object : CountDownTimer(difference, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 var diff = millisUntilFinished
                 val secondsInMilli: Long = 1000
@@ -406,12 +387,11 @@ class GamesFragment : Fragment() {
 
                 val elapsedSeconds = diff / secondsInMilli
 
-                if(elapsedDays > 2) {
+                if (elapsedDays > 2) {
                     ngTimeCounterTextView.text = "$elapsedDays days"
-                }else if (elapsedDays > 1) {
+                } else if (elapsedDays > 1) {
                     ngTimeCounterTextView.text = "$elapsedDays day"
-                }
-                else {
+                } else {
                     val formattedTime = String.format(
                         "%02d:%02d:%02d",
                         elapsedHours,
@@ -453,11 +433,14 @@ class GamesFragment : Fragment() {
                 if (document != null) {
                     val link = document.getString("url")
                     if (link != null) {
-                        tounamentTableUrl = link
+                        tournamentTableUrl = link
                         requireActivity()
                             .supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.fragment_container, WebStatsFragment.newInstance("$tounamentTableUrl"))
+                            .replace(
+                                R.id.fragment_container,
+                                WebStatsFragment.newInstance("$tournamentTableUrl")
+                            )
                             .addToBackStack(null)
                             .commit()
                     }
@@ -479,7 +462,7 @@ class GamesFragment : Fragment() {
         @JvmStatic
 
         var chosenLeague = SBLD_LEAGUE
-        var gameArray  = mutableListOf<Game>()
+        var gameArray = mutableListOf<Game>()
 
         fun newInstance(param1: String, param2: String) =
             GamesFragment().apply {
