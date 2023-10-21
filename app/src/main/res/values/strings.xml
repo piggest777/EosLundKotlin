@@ -123,4 +123,5 @@
     <string name="default_channel_name">Default notifications channel</string>
     <string name="channel_description">Common notifications about matches and etc.</string>
     <string name="cancelled">CANCELLED</string>
+    <string name="be_herr">BE HERR</string>
 </resources>

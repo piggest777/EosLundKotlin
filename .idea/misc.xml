@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -8,6 +7,7 @@
         <entry key="..\:/Users/Piggest/StudioProjects/EosLundKotlin/app/src/main/res/layout/news_list_item.xml" value="0.4685185185185185" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.224" />
         <entry key="app/src/main/res/drawable/bg_gradient.xml" value="0.375" />
+        <entry key="app/src/main/res/drawable/eos_logo_vector.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable/expand.xml" value="0.521" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.224" />
         <entry key="app/src/main/res/drawable/image_rounded.xml" value="0.2495" />
@@ -31,7 +31,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -16,6 +16,7 @@ object Constants {
     const val SE_HERR_LEAGUE = "SE Herr"
     const val BE_DAM_LEAGUE = "BE Dam"
     const val ALL_LEAGUES = "All"
+    const val BE_HERR_LEAGUE = "BE Herr"
 
 
     const val OPPOSITE_TEAM_CODE = "oppositeTeamCode"

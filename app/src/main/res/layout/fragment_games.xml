@@ -29,67 +29,130 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="5dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
-                <RadioButton
-                    android:id="@+id/news_radio_button"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/linear_layout_leagues"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_segmented_left"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:text="@string/sbld"
-                    android:textColor="@drawable/txt_segmented" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <RadioButton
-                    android:id="@+id/se_herr_team_radio_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_segmented_center"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:text="@string/se_herr"
-                    android:textColor="@drawable/txt_segmented" />
+                    <Button
+                        android:id="@+id/games_sbld_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_scrollable_selector"
+                        android:textColor="@color/button_text_color_selector"
+                        app:backgroundTint="@null"
+                        android:gravity="center"
+                        android:text="@string/sbld" />
+                    <Button
+                        android:id="@+id/games_seh_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_scrollable_selector"
+                        android:textColor="@color/button_text_color_selector"
+                        app:backgroundTint="@null"
+                        android:gravity="center"
+                        android:text="@string/se_herr" />
+                    <Button
+                        android:id="@+id/games_all_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_scrollable_selector"
+                        android:button="@android:color/transparent"
+                        app:backgroundTint="@null"
+                        android:textColor="@color/button_text_color_selector"
+                        android:gravity="center"
+                        android:text="@string/all_teams" />
+                    <Button
+                        android:id="@+id/games_bed_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_scrollable_selector"
+                        android:textColor="@color/button_text_color_selector"
+                        app:backgroundTint="@null"
+                        android:gravity="center"
+                        android:text="@string/be_dam" />
 
-                <RadioButton
-                    android:id="@+id/beDamRadioButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_segmented_center"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
+                    <Button
+                        android:id="@+id/be_herr_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_scrollable_selector"
+                        android:textColor="@color/button_text_color_selector"
+                        app:backgroundTint="@null"
+                        android:gravity="center"
+                        android:text="@string/be_herr" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
-                    android:text="@string/be_dam"
-                    android:textColor="@drawable/txt_segmented" />
+<!--            <RadioGroup-->
+<!--                android:id="@+id/radioGroup"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="45dp"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingStart="5dp"-->
+<!--                android:paddingTop="5dp"-->
+<!--                android:paddingEnd="5dp"-->
+<!--                android:paddingBottom="5dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
 
-                <RadioButton
-                    android:id="@+id/video_radio_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_segmented_right"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="@string/all_teams"
-                    android:textColor="@drawable/txt_segmented" />
-            </RadioGroup>
+<!--                <RadioButton-->
+<!--                    android:id="@+id/news_radio_button"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/btn_segmented_left"-->
+<!--                    android:button="@android:color/transparent"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="@string/sbld"-->
+<!--                    android:textColor="@drawable/txt_segmented" />-->
+
+<!--                <RadioButton-->
+<!--                    android:id="@+id/se_herr_team_radio_button"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/btn_segmented_center"-->
+<!--                    android:button="@android:color/transparent"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="@string/se_herr"-->
+<!--                    android:textColor="@drawable/txt_segmented" />-->
+
+<!--                <RadioButton-->
+<!--                    android:id="@+id/beDamRadioButton"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/btn_segmented_center"-->
+<!--                    android:button="@android:color/transparent"-->
+<!--                    android:gravity="center"-->
+
+<!--                    android:text="@string/be_dam"-->
+<!--                    android:textColor="@drawable/txt_segmented" />-->
+
+<!--                <RadioButton-->
+<!--                    android:id="@+id/video_radio_button"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/btn_segmented_right"-->
+<!--                    android:button="@android:color/transparent"-->
+<!--                    android:gravity="center"-->
+<!--                    android:padding="2dp"-->
+<!--                    android:text="@string/all_teams"-->
+<!--                    android:textColor="@drawable/txt_segmented" />-->
+<!--            </RadioGroup>-->
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -394,6 +457,7 @@
             android:insetBottom="0dp"
             android:minHeight="20dp"
             android:text="@string/tournament_btn"
+            android:visibility="invisible"
             app:icon="@drawable/leaderboard"
             app:layout_constraintBottom_toTopOf="@+id/game_schedule_list"
             app:layout_constraintEnd_toEndOf="parent"

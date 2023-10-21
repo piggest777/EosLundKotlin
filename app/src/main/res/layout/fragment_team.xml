@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/news_radio_button"
+            android:id="@+id/sbld_team_radio_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,7 +65,18 @@
             android:textColor="@drawable/txt_segmented" />
 
         <RadioButton
-            android:id="@+id/video_radio_button"
+            android:id="@+id/be_dam_team_radio_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_segmented_center"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/be_dam"
+            android:textColor="@drawable/txt_segmented" />
+
+        <RadioButton
+            android:id="@+id/be_herr_team_league_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -73,7 +84,7 @@
             android:button="@android:color/transparent"
             android:gravity="center"
             android:padding="2dp"
-            android:text="@string/be_dam"
+            android:text="@string/be_herr"
             android:textColor="@drawable/txt_segmented" />
     </RadioGroup>
 

@@ -27,6 +27,7 @@ import se.eoslund.piggest.model.PlayerRO
 import se.eoslund.piggest.services.CallbackAggregator
 import se.eoslund.piggest.utilites.Constants
 import se.eoslund.piggest.utilites.Constants.BASE_UPDATE_DATE
+import se.eoslund.piggest.utilites.Constants.BE_HERR_LEAGUE
 import se.eoslund.piggest.utilites.Constants.DATE
 import se.eoslund.piggest.utilites.Constants.PLAYERS_REF
 import se.eoslund.piggest.utilites.Constants.PLAYER_BASE_UPDATE_DATE
@@ -66,7 +67,9 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
         loadingAnim = view.findViewById(R.id.team_loading_animation)
         progressView.progress = 0f
         progressView.visibility = View.GONE
-        val sbldRadioButton = view.findViewById<RadioButton>(R.id.news_radio_button)
+
+
+        val sbldRadioButton = view.findViewById<RadioButton>(R.id.sbld_team_radio_button)
         sbldRadioButton.isChecked = true
 
         segmentControl.setOnCheckedChangeListener { radioGroup, radioButtonID ->
@@ -75,6 +78,7 @@ class TeamFragment : Fragment(), CoroutineScope by MainScope() {
                 getString(R.string.sbld) -> Constants.SBLD_LEAGUE
                 getString(R.string.se_herr) -> Constants.SE_HERR_LEAGUE
                 getString(R.string.be_dam) -> Constants.BE_DAM_LEAGUE
+                getString(R.string.be_herr) -> Constants.BE_HERR_LEAGUE
                 getString(R.string.all_teams) -> Constants.ALL_LEAGUES
                 else -> Constants.SBLD_LEAGUE
             }

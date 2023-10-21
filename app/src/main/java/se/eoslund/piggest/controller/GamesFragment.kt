@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -39,6 +40,7 @@ import se.eoslund.piggest.services.DateFormat
 import se.eoslund.piggest.services.DateFormatter
 import se.eoslund.piggest.utilites.Constants.ALL_LEAGUES
 import se.eoslund.piggest.utilites.Constants.BE_DAM_LEAGUE
+import se.eoslund.piggest.utilites.Constants.BE_HERR_LEAGUE
 import se.eoslund.piggest.utilites.Constants.BROADCAST_UPDATE_GAMES_TABLE
 import se.eoslund.piggest.utilites.Constants.GAMES_REF
 import se.eoslund.piggest.utilites.Constants.GAME_DATE_AND_TIME
@@ -62,7 +64,7 @@ class GamesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var radioGroup: RadioGroup
+//    lateinit var radioGroup: RadioGroup
 
     lateinit var gameScheduleListener: ListenerRegistration
     lateinit var teamsUpdateReceiver: BroadcastReceiver
@@ -86,6 +88,14 @@ class GamesFragment : Fragment() {
     lateinit var comingSoonAnimationView: LottieAnimationView
     lateinit var fabOpenMatchTableButton: FloatingActionButton
     lateinit var ordinaryTournamentTableButton: MaterialButton
+    lateinit var sbldButton: Button
+    lateinit var sehButton: Button
+    lateinit var allButton: Button
+    lateinit var bedButton: Button
+    lateinit var behButton: Button
+    lateinit var linearLayoutLeagues: LinearLayout
+    lateinit var horizontalScrollView: HorizontalScrollView
+
     var countDownTimer: CountDownTimer? = null
 
 
@@ -123,9 +133,9 @@ class GamesFragment : Fragment() {
 
         gamesList = view.findViewById(R.id.game_schedule_list)
         gamesList.itemAnimator = null
-        radioGroup = view.findViewById(R.id.radioGroup)
-        val sbldRadioButton: RadioButton = view.findViewById(R.id.news_radio_button)
-        sbldRadioButton.isChecked = true
+//        radioGroup = view.findViewById(R.id.radioGroup)
+//        val sbldRadioButton: Button = view.findViewById(R.id.games_sbld_button)
+//        sbldRadioButton.isChecked = true
 
         teamsUpdateReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -158,24 +168,18 @@ class GamesFragment : Fragment() {
         fabOpenMatchTableButton = view.findViewById(R.id.fab_tournament_table)
         ordinaryTournamentTableButton = view.findViewById(R.id.tournament_btn)
 
+        sbldButton = view.findViewById(R.id.games_sbld_button)
+        sehButton = view.findViewById(R.id.games_seh_button)
+        allButton = view.findViewById(R.id.games_all_button)
+        bedButton = view.findViewById(R.id.games_bed_button)
+        behButton = view.findViewById(R.id.be_herr_button)
+        linearLayoutLeagues = view.findViewById(R.id.linear_layout_leagues)
+        horizontalScrollView = view.findViewById(R.id.horizontalScrollView)
+
+        setupListenerForButtons()
+
         setUpCardSize()
 
-
-        radioGroup.setOnCheckedChangeListener { radioGroup, radioButtonID ->
-            val selectedRadioButton = radioGroup.findViewById<RadioButton>(radioButtonID)
-            chosenLeague = when (selectedRadioButton.text) {
-                getString(R.string.sbld) -> SBLD_LEAGUE
-                getString(R.string.se_herr) -> SE_HERR_LEAGUE
-                getString(R.string.be_dam) -> BE_DAM_LEAGUE
-                getString(R.string.all_teams) -> ALL_LEAGUES
-                else -> SBLD_LEAGUE
-            }
-
-
-            countDownTimer?.cancel()
-            gameScheduleListener.remove()
-            setListener()
-        }
 
         ngCard.setOnClickListener(View.OnClickListener {
             if (curGame != null) {
@@ -249,10 +253,72 @@ class GamesFragment : Fragment() {
         }
     }
 
+    private fun setupListenerForButtons() {
+        sbldButton.setOnClickListener {
+            selectButton(sbldButton)
+        }
+        sehButton.setOnClickListener  {
+            selectButton(sehButton)
+        }
+        allButton.setOnClickListener  {
+            selectButton(allButton)
+        }
+        bedButton.setOnClickListener  {
+            selectButton(bedButton) }
+        behButton.setOnClickListener  {
+            selectButton(behButton)
+        }
+
+        when (chosenLeague) {
+            SBLD_LEAGUE -> selectButton(sbldButton)
+            SE_HERR_LEAGUE -> selectButton(sehButton)
+            ALL_LEAGUES -> selectButton(allButton)
+            BE_DAM_LEAGUE -> selectButton(bedButton)
+            BE_HERR_LEAGUE -> selectButton(behButton)
+        }
+    }
+
+    private fun selectButton(selectedButton: Button) {
+        for (i in 0 until linearLayoutLeagues.childCount) {
+            val btn = linearLayoutLeagues.getChildAt(i) as? Button
+            if (btn == selectedButton) {
+                btn.isSelected = true
+                centerButtonInScrollView(btn)
+                val width = linearLayoutLeagues.getChildAt(i).width
+                btn.invalidate()
+            } else {
+                btn?.isSelected = false
+                btn?.invalidate()
+            }
+        }
+
+                chosenLeague = when (selectedButton.text) {
+                getString(R.string.sbld) -> SBLD_LEAGUE
+                getString(R.string.se_herr) -> SE_HERR_LEAGUE
+                getString(R.string.be_dam) -> BE_DAM_LEAGUE
+                getString(R.string.all_teams) -> ALL_LEAGUES
+                    getString(R.string.be_herr) -> BE_HERR_LEAGUE
+                else -> SBLD_LEAGUE
+            }
+            countDownTimer?.cancel()
+        if (::gameScheduleListener.isInitialized) {
+            gameScheduleListener.remove()
+        }
+            setListener()
+    }
+    private fun centerButtonInScrollView(button: Button) {
+        horizontalScrollView.post {
+            val leftPos = button.left
+            val scrollViewWidth = horizontalScrollView.width
+            val scrollTo = leftPos - (scrollViewWidth / 2) + (button.width / 2) // add half the button width to perfectly center it
+
+            horizontalScrollView.smoothScrollTo(scrollTo, 0)
+        }
+    }
     private fun setListener() {
         gameArray.clear()
         val leaguePredicate = if (chosenLeague == ALL_LEAGUES) {
-            mutableListOf(SBLD_LEAGUE, SE_HERR_LEAGUE, BE_DAM_LEAGUE)
+            mutableListOf(SBLD_LEAGUE, SE_HERR_LEAGUE, BE_DAM_LEAGUE, BE_HERR_LEAGUE)
         } else {
             mutableListOf(chosenLeague)
         }
@@ -282,7 +348,6 @@ class GamesFragment : Fragment() {
                 }
                 nextGameInfo()
             }
-
     }
 
 
@@ -461,7 +526,7 @@ class GamesFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
 
-        var chosenLeague = SBLD_LEAGUE
+        var chosenLeague = ALL_LEAGUES
         var gameArray = mutableListOf<Game>()
 
         fun newInstance(param1: String, param2: String) =

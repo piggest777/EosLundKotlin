@@ -19,7 +19,7 @@ import se.eoslund.piggest.utilites.Constants.TEAM_LEAGUE
 import java.io.Serializable
 import java.util.*
 
-public class Game(
+data class Game(
     val lsTeamCode: String,
     val rsTeamCode: String,
     val lsScores: Long,
