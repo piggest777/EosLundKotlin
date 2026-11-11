@@ -1,5 +1,7 @@
 # Eos Lund for Android
 
+**Active development** · 2021–2023
+
 A Kotlin app for following Eos Lund basketball. Fans can browse fixtures and results by league, open match details and standings, look up teams and players, and read club news. The app also supports push notifications through Firebase Cloud Messaging.
 
 ## Code overview
